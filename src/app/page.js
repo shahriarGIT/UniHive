@@ -1,103 +1,206 @@
+"use client";
+
 import Image from "next/image";
+import { useAppDispatch } from "./store";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+import { BiTargetLock } from "react-icons/bi";
+import { useSearchParams } from "next/navigation";
+import CardList from "./components/home/Cardlist";
+import Partner from "./components/home/Partner";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const router = useRouter();
+  // const locationNameRef = useRef<any>(null);
+  // const { isLoggedIn, userInfo } = useAppSelector((state) => state.userinfo);
+  // const { city, road, area } = useAppSelector((state) => state.location);
+  const dispatch = useAppDispatch();
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+  const searchParams = useSearchParams();
+  // const [isLoading, userData, userError] = useIsLoggedIn();
+  const [isMapModal, setMapModal] = useState(false);
+
+  const [isFocused, setIsFocused] = useState(false);
+
+  // const Map = useMemo();
+  // () =>
+  //   dynamic(() => import("./component/Map"), {
+  //     ssr: false,
+  //   }),
+  // [location]
+
+  const urlSearchParams = new URLSearchParams(
+    Array.from(searchParams.entries())
   );
+
+  // const [inputValue, setInputValue] = useState<any>("");
+
+  const [inputValue, setInputValue] = useState("");
+  const [isLocation, setIsLocation] = useState(false);
+
+  const handleInputChange = () => {};
+
+  const handleSelectOption = () => {};
+
+  const mapModalhandler = () => {};
+
+  const setDeliveryUrlHandler = () => {
+    router.push("/dashboard");
+  };
+
+  const setMapUrlHandler = () => {};
+
+  const closeModal = () => {};
+
+  // const [modalRef] = useOptionClose({ closeModal });
+
+  const setPickUpUrlHandler = () => {};
+
+  // let mapInputValue = area + "," + road + "," + city;
+
+  const handleFocus = () => {
+    // Perform the action you want when the input is focused
+  };
+
+  const handleBlur = () => {};
+
+  let content;
+  if (false) {
+    content = <p>Loading</p>;
+  } else if (true && true) {
+    content = (
+      <main>
+        <div className="flex items-center relative z-50  h-[60vh] md:h-[80vh]  md:-mt-[6rem]  lg:h-[100vh] lg:-mt-[2rem] ">
+          <div className="w-5/5  md:w-4/5  md:-mt-48">
+            <h1 className="relative pl-10 md:pl-[3rem] w-4/4  font-light text-4xl">
+              It's the food and groceries you love, delivered
+            </h1>
+            <span className=" w-11/12    lg:w-4/5  left-[50%] lg:left-[43%] -translate-x-[50%] lg: mt-[6rem] absolute md:inline-flex md:gap-4 md:pt-3 md:pl-4 md:px-5 md:shadow-lg ">
+              <input
+                // @ts-ignore
+                autoComplete="off"
+                className="w-full  md:w-3/6   h-16 rounded-md shadow-lg md:shadow-none pl-3 mb-5 outline-gray-300 outline-1"
+                type="text"
+                id="searchbox"
+                value={inputValue}
+                // onChange={(e) => setInputValue(e.target.value)}
+                onChange={handleInputChange}
+                placeholder="Enter your full address"
+              />
+              <BiTargetLock
+                onClick={mapModalhandler}
+                size={25}
+                className="text-pandaColor-primary absolute top-5 right-6 md:right-[60vw] md:top-8 lg:right-[43vw] cursor-pointer"
+              />
+
+              {
+                <div
+                  className={`absolute  text-gray-600 -top-8 left-1 md:left-2 lg:left-5 px-1 py-1 w-2/3  ${
+                    isLocation
+                      ? "transition-opacity duration-500 animate-bounce "
+                      : "transition-opacity duration-500 opacity-0"
+                  }`}
+                >
+                  <h3 className="text-lg lg:text-2xl  text-pandaColor-primary">
+                    Please enter a location
+                  </h3>
+                </div>
+              }
+              {inputValue && (
+                <ul className=" absolute top-0 left-1 lg:left-3 w-2/3 lg:w-1/3 bg-white mt-[4.1rem] md:mt-[4.8rem]  lg:mt-20 z-[500]">
+                  {location
+                    .filter(
+                      (option) =>
+                        option
+                          .toLowerCase()
+                          .includes(inputValue.toLowerCase()) &&
+                        option !== selectedOption
+                    )
+                    .map((option, index) => (
+                      <li
+                        key={index}
+                        className="px-3 text-lg py-1 cursor-pointer hover:bg-gray-200"
+                        onClick={() => handleSelectOption(option)}
+                      >
+                        {option}
+                      </li>
+                    ))}
+                </ul>
+              )}
+
+              <div className="flex items-center  gap-3">
+                <button
+                  onClick={setDeliveryUrlHandler}
+                  className="bg-amber-500 hover:bg-pandaColor-dark hover:scale-105 w-1/2 md:w-[11rem] py-5 md:mb-4 rounded-lg font-medium text-white"
+                >
+                  Delivery
+                </button>
+                <p className="text-lg font-light md:mb-4">or</p>
+                <button
+                  onClick={setPickUpUrlHandler}
+                  className="bg-pandaColor-primary hover:bg-pandaColor-dark hover:scale-105  w-1/2 md:w-[11rem] py-5 md:mb-4 rounded-lg font-medium text-white"
+                >
+                  Pick-up
+                </button>
+              </div>
+            </span>
+            {isMapModal && (
+              <div
+                ref={modalRef}
+                className="shadow-[0px_0px_8px_3px_rgba(0,0,0,0.2)] rounded-xl bg-white w-3/4 md:2/4 right-1/2 translate-x-1/2 top-[6rem] absolute p-5 "
+              >
+                <h2 className="text-lg text-pandaColor-primary font-medium mt-1 mb-4">
+                  Search your Location
+                </h2>
+                <button
+                  className="absolute right-5 top-6 px-[.7rem] py-1 text-pandaColor-primary font-bold bg-white rounded-3xl"
+                  onClick={closeModal}
+                >
+                  X
+                </button>
+
+                <div className="mb-2">{/* <Map /> */}</div>
+                {area && (
+                  <div className="bg-red-100 text-black font-medium py-2 px-1">
+                    <p>
+                      {area} , {road}
+                    </p>
+                    <p> {city}</p>
+                    <p></p>
+                  </div>
+                )}
+
+                <button
+                  onClick={() => setMapUrlHandler(area)}
+                  className="bg-pandaColor-primary hover:bg-pandaColor-light  w-full  py-3 my-2 rounded-lg font-medium text-white"
+                >
+                  Search Restaurants
+                </button>
+              </div>
+            )}
+          </div>
+          <div className="h-[90%]">
+            <Image
+              src="/images/gallery-1.webp"
+              width={1200}
+              height={1200}
+              alt="picture of groceries"
+              className="h-full w-full object-fill"
+            />
+          </div>
+        </div>
+
+        <Partner />
+
+        {/* <span className="bg-slate-400 h-[10rem]"> */}
+        <CardList />
+        {/* </span> */}
+      </main>
+    );
+  } else {
+    content = <p>userError</p>;
+  }
+
+  return content;
 }

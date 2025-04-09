@@ -5,22 +5,74 @@
   --foreground: #171717;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.slick-slider {
+}
+
+.slick-slide {
+  width: 15rem !important;
+  margin-right: 2rem;
+}
+.adslider-class {
+  margin-right: 5rem !important;
+}
+
+.slick-arrow {
+  width: 2.5rem !important;
+  height: 3rem !important;
+  color: white !important;
+}
+
+/* #e21b70 */
+.slick-prev,
+.slick-next {
+  background-color: #e21b70 !important;
+  border-radius: 0.5rem !important;
+  z-index: 20;
+}
+
+.slick-prev {
+}
+.slick-next {
+}
+
+.slick-next:before,
+.slick-prev:before {
+  font-family: slick;
+  font-size: 20px;
+  line-height: 1;
+  opacity: 0;
+  color: white !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.slick-next:hover,
+.slick-prev:hover {
+  background-color: rgb(230, 0, 115) !important;
+}
+
+.slick-disabled {
+  display: none !important;
+}
+
+@media screen and (width < 450px) {
+  #slider-container {
+    width: 150vw !important;
+    background: red;
+    padding: 0 2rem;
+  }
+}
+
+@media screen and (width < 350px) {
+  #slider-container {
+    width: 150vw !important;
+    background: red;
+    padding: 0 0.7rem;
+  }
 }
