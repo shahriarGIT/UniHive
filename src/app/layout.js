@@ -7,6 +7,7 @@ import "slick-carousel/slick/slick-theme.css";
 
 import { Provider } from "react-redux";
 import { store } from "./store/index.jsx";
+import Navbar from "./components/navbar/Navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,6 +28,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <Provider store={store}>
+        <Navbar />
         <body className={``}>{children}</body>
       </Provider>
     </html>

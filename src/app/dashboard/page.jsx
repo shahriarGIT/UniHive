@@ -4,6 +4,8 @@ import { useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import AdSlider from "../components/dashboard/AdSlider";
 import { useAppDispatch, useAppSelector } from "../store";
+import ShopType from "../components/dashboard/ShopType";
+import Features from "../components/dashboard/Features";
 
 const Dashboard = () => {
   const [isFilter, setIsFilter] = useState(false);
@@ -28,10 +30,12 @@ const Dashboard = () => {
       <div className="">
         {/* sticky element */}
         {/* restaurand search */}
-        {/* <ShopType /> */}
+        <ShopType />
+
         {/* <RestaurantSearchBox setIsFilter={setIsFilter} /> */}
 
         <AdSlider />
+        <Features />
       </div>
     </div>
   );
