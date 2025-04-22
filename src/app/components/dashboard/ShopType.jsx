@@ -3,7 +3,7 @@ import { useParams, usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-const ShopType = () => {
+const FeatureType = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -83,4 +83,4 @@ const ShopType = () => {
   );
 };
 
-export default ShopType;
+export default FeatureType;
