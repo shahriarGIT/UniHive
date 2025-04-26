@@ -19,11 +19,12 @@ const FeatureType = () => {
     }
   };
   const urlPickupHandler = () => {
-    if (url.get("type") !== "polling") {
-      url.delete("type");
-      url.append("type", "polling");
-      router.push(`${pathname}?${url.toString()}`);
-    }
+    // if (url.get("type") !== "polling") {
+    //   url.delete("type");
+    //   url.append("type", "polling");
+    //   router.push(`${pathname}?${url.toString()}`);
+    // }
+    router.push("dashboard/polling");
   };
   const urlShopHandler = () => {
     if (url.get("type") !== "pandashop") {
@@ -65,7 +66,7 @@ const FeatureType = () => {
               searchParams.get("type") === "pickup" ? "  " : "before:hidden"
             }`}
           >
-            PICK-UP
+            Polling
           </button>
         </li>
         <li className="flex-1 group h-[4.5rem] lg:h-14  relative lg:bg-slate-100 hover:bg-white  lg:hover:shadow-lg lg:bg-[url('/images/shop.webp')] bg-contain bg-no-repeat bg-right">
