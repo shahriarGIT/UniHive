@@ -19,9 +19,9 @@ const FeatureType = () => {
     }
   };
   const urlPickupHandler = () => {
-    if (url.get("type") !== "pickup") {
+    if (url.get("type") !== "polling") {
       url.delete("type");
-      url.append("type", "pickup");
+      url.append("type", "polling");
       router.push(`${pathname}?${url.toString()}`);
     }
   };
