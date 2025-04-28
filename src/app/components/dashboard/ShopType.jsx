@@ -12,11 +12,12 @@ const FeatureType = () => {
   //   const userInfo = useAppSelector((state) => state.userinfo.userInfo);
 
   const urlDeliveryHandler = () => {
-    if (url.get("type") !== "delivery") {
-      url.delete("type");
-      url.append("type", "delivery");
-      router.push(`${pathname}?${url.toString()}`);
-    }
+    // if (url.get("type") !== "delivery") {
+    //   url.delete("type");
+    //   url.append("type", "delivery");
+    //   router.push(`${pathname}?${url.toString()}`);
+    // }
+    router.push("dashboard/quiz");
   };
   const urlPickupHandler = () => {
     // if (url.get("type") !== "polling") {
@@ -56,7 +57,7 @@ const FeatureType = () => {
                 : "before:hidden"
             }`}
           >
-            DELIVERY
+            Quiz
           </button>
         </li>
         <li className="flex-1 group h-[4.5rem] lg:h-14  relative lg:bg-slate-100 hover:bg-white lg:hover:shadow-lg lg:bg-[url('/images/pickup.webp')] bg-no-repeat bg-fit bg-right">
