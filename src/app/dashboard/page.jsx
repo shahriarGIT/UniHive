@@ -6,6 +6,7 @@ import AdSlider from "../components/dashboard/AdSlider";
 import { useAppDispatch, useAppSelector } from "../store";
 import FeatureType from "../components/dashboard/ShopType";
 import Features from "../components/dashboard/Features";
+import CategoryCard from "../components/dashboard/CategoryCard";
 
 const Dashboard = () => {
   const [isFilter, setIsFilter] = useState(false);
@@ -36,6 +37,7 @@ const Dashboard = () => {
 
         <AdSlider />
         <Features />
+        <CategoryCard />
       </div>
     </div>
   );

@@ -1,0 +1,109 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import io from "socket.io-client";
+
+let socket; // Declare socket outside the component to manage the connection
+
+export default function JoinQuizRoomPage() {
+  const [roomName, setRoomName] = useState("");
+  const [roomPassword, setRoomPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [error, setError] = useState("");
+  // const [participants, setParticipants] = useState([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    // Initialize socket.io connection when the component mounts
+    socket = io("http://localhost:3001");
+
+    return () => {
+      // Clean up the socket connection when the component unmounts
+      if (socket) {
+        socket.disconnect();
+      }
+    };
+  }, []);
+
+  const handleJoinRoom = async () => {
+    if (!roomName || !roomPassword) {
+      setError("Please fill in both fields.");
+      return;
+    }
+
+    try {
+      // Send join request to the server to validate the room
+      socket.emit("joinRoom", {
+        roomName,
+        roomPassword,
+        user: { _id: "123123131231", name: username },
+      });
+
+      // Listen for any error during the join attempt
+      socket.on("joinError", (error) => {
+        setError(error.message);
+      });
+
+      // Listen for updated participants list upon successful room join
+      socket.on("participantsUpdate", (updatedParticipants) => {
+        // setParticipants(updatedParticipants);
+        router.push(`quiz-lobby/${roomName}`); // Redirect to the quiz room page
+      });
+    } catch (err) {
+      console.error("Error joining room", err);
+      setError("Failed to join quiz room. Please try again.");
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-6">
+      <h1 className="text-2xl font-bold mb-6">Join a Quiz Room</h1>
+
+      <div className="w-full max-w-md space-y-4">
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          className="w-full p-3 border border-gray-300 rounded"
+        />
+        <input
+          type="text"
+          placeholder="Room Name"
+          value={roomName}
+          onChange={(e) => setRoomName(e.target.value)}
+          className="w-full p-3 border border-gray-300 rounded"
+        />
+
+        <input
+          type="password"
+          placeholder="Room Password"
+          value={roomPassword}
+          onChange={(e) => setRoomPassword(e.target.value)}
+          className="w-full p-3 border border-gray-300 rounded"
+        />
+
+        {error && <p className="text-red-500">{error}</p>}
+
+        <button
+          onClick={handleJoinRoom}
+          className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded w-full"
+        >
+          Join Room
+        </button>
+      </div>
+
+      {/* <div className="mt-6">
+        <h2 className="text-lg font-semibold">Participants:</h2>
+        <ul className="space-y-2">
+          {participants.map((participant, index) => (
+            <li key={index} className="text-sm text-gray-700">
+              {participant}
+            </li>
+          ))}
+        </ul>
+      </div> */}
+    </div>
+  );
+}
