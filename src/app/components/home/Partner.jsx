@@ -10,7 +10,7 @@ const Partner = () => {
           Partners
         </h2>
         <h4 className="text-black text-base md:text-3xl z-10 relative">
-          You prepare the food, we handle the rest
+          Together, we're shaping the future of education"
         </h4>
       </div>
       {/* className="bg-[url('/images/home-vendor-bd.webp')] */}
@@ -24,15 +24,12 @@ const Partner = () => {
         />
       </div>
       <div className="relative mx-auto md:ml-24 -mt-44 bg-slate-50 w-11/12 md:w-3/5 lg:w-2/5 p-10">
-        <h2 className="text-2xl text-gray-800">
-          List your restaurant or shop on foodpanda{" "}
-        </h2>
+        <h2 className="text-2xl text-gray-800">Enjoy Learning </h2>
         <h3 className="text-lg text-gray-600 pt-8">
-          Would you like millions of new customers to enjoy your amazing food
-          and groceries? So would we! It's simple: we list your menu and product
-          lists online, help you process orders, pick them up, and deliver them
-          to hungry pandas – in a heartbeat! Interested? Let's start our
-          partnership today!
+          Learn together, learn better! Our app empowers you to create and share
+          quizzes, polls, and flashcards with your community. Experience the
+          power of real-time collaboration as you test your knowledge, gather
+          feedback, and master new skills together.
         </h3>
 
         <Link

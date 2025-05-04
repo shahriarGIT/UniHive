@@ -4,13 +4,14 @@ import React, { useState, useEffect } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import { useRouter } from "next/navigation";
-import { useAppDispatch, useAppSelector } from "../store";
-import { useUserLoginMutation } from "../store/apis/userApi";
+
 import { useForm } from "react-hook-form";
 import useIsLoggedIn from "@/hooks/useIsLoggedIn";
 import Spinner from "../components/Spinner";
 import SpinnerCircle from "../components/loader/SpinnerCircle";
 import AlertMessage from "../components/AlertMessage";
+import { useUserLoginMutation } from "../store/apis/userApi";
+import { useAppDispatch, useAppSelector } from "../store";
 
 const page = () => {
   const [loginModal, setLoginModal] = useState(false);
@@ -26,7 +27,7 @@ const page = () => {
   const dispatch = useAppDispatch();
   const [login, loginResult] = useUserLoginMutation();
   const [isLoading, userData, userError] = useIsLoggedIn();
-  const userInfo = useAppSelector((state) => state?.userinfo?.userInfo);
+  const { isLoggedIn, userInfo } = useAppSelector((state) => state.userInfo);
 
   useEffect(() => {
     if (loginResult?.data?.status === "success") {
@@ -52,7 +53,7 @@ const page = () => {
     // Use a type guard or assertion to narrow down the type
     if (
       "data" in loginResult.error &&
-      typeof loginResult.error.data === "object" &&
+      loginResult.error.data === "object" &&
       loginResult.error.data !== null
     ) {
       // Now you can safely access the 'data' object properties
@@ -94,7 +95,7 @@ const page = () => {
           <div className="mt-10 text-center">
             <button
               onClick={() => setLoginModal((prev) => !prev)}
-              className=" rounded-md text-sm hover:bg-pandaColor-dark font-medium text-center text-white border-black bg-pandaColor-primary w-full  py-3"
+              className=" rounded-md text-sm hover:bg-amber-300 font-medium text-center text-white border-black bg-amber-600 w-full  py-3"
             >
               Log In
             </button>

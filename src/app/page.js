@@ -74,7 +74,7 @@ export default function Home() {
         <div className="flex items-center relative z-50  h-[60vh] md:h-[80vh]  md:-mt-[6rem]  lg:h-[100vh] lg:-mt-[2rem] ">
           <div className="w-5/5  md:w-4/5  md:-mt-48">
             <h1 className="relative pl-10 md:pl-[3rem] w-4/4  font-light text-4xl">
-              It's the food and groceries you love, delivered
+              Interactive learning for everyone.
             </h1>
             <span className=" w-11/12    lg:w-4/5  left-[50%] lg:left-[43%] -translate-x-[50%] lg: mt-[6rem] absolute md:inline-flex md:gap-4 md:pt-3 md:pl-4 md:px-5 md:shadow-lg ">
               <input
@@ -91,7 +91,7 @@ export default function Home() {
               <BiTargetLock
                 onClick={mapModalhandler}
                 size={25}
-                className="text-pandaColor-primary absolute top-5 right-6 md:right-[60vw] md:top-8 lg:right-[43vw] cursor-pointer"
+                className="text-amber-500 absolute top-5 right-6 md:right-[60vw] md:top-8 lg:right-[43vw] cursor-pointer"
               />
 
               {
@@ -107,7 +107,7 @@ export default function Home() {
                   </h3>
                 </div>
               }
-              {inputValue && (
+              {/* {inputValue && (
                 <ul className=" absolute top-0 left-1 lg:left-3 w-2/3 lg:w-1/3 bg-white mt-[4.1rem] md:mt-[4.8rem]  lg:mt-20 z-[500]">
                   {location
                     .filter(
@@ -127,21 +127,21 @@ export default function Home() {
                       </li>
                     ))}
                 </ul>
-              )}
+              )} */}
 
               <div className="flex items-center  gap-3">
                 <button
                   onClick={setDeliveryUrlHandler}
-                  className="bg-amber-500 hover:bg-pandaColor-dark hover:scale-105 w-1/2 md:w-[11rem] py-5 md:mb-4 rounded-lg font-medium text-white"
+                  className="bg-amber-500 hover:bg-amber-300 hover:scale-105 w-1/2 md:w-[11rem] py-5 md:mb-4 rounded-lg font-medium text-white"
                 >
-                  Delivery
+                  Dashboard
                 </button>
                 <p className="text-lg font-light md:mb-4">or</p>
                 <button
                   onClick={setPickUpUrlHandler}
-                  className="bg-pandaColor-primary hover:bg-pandaColor-dark hover:scale-105  w-1/2 md:w-[11rem] py-5 md:mb-4 rounded-lg font-medium text-white"
+                  className="bg-amber-300 hover:bg-amber-400 hover:scale-105  w-1/2 md:w-[11rem] py-5 md:mb-4 rounded-lg font-medium text-white"
                 >
-                  Pick-up
+                  X
                 </button>
               </div>
             </span>

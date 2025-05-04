@@ -9,17 +9,7 @@ import useIsLoggedIn from "@/hooks/useIsLoggedIn";
 import AlertMessage from "../components/AlertMessage";
 import SpinnerCircle from "../components/loader/SpinnerCircle";
 
-const location = [
-  "Dhanmondi",
-  "Uttara",
-  "Demra",
-  "Banani",
-  "Nikunja",
-  "Bashundhara",
-  "Badda",
-  "Mirpur",
-  "Muhammodpur",
-];
+const oranizationType = ["University", "School", "College", "Office"];
 
 const cardInfo = [
   {
@@ -74,7 +64,7 @@ const page = () => {
     //   router.push("/login");
     // }
     if (signUpResult.isSuccess || userData) {
-      router.push("/");
+      router.push("/login");
     }
   }, [userData, signUpResult]);
 
@@ -90,37 +80,6 @@ const page = () => {
     console.log(watch());
     signUp(watch());
   };
-
-  let indexCity = 0;
-  let currentIndex = cardInfo.findIndex(
-    (card) => card.city === watch("address.city")
-  );
-  currentIndex > -1 ? (indexCity = currentIndex) : (indexCity = 0);
-
-  let errStatus, errMsg;
-  if (signUpResult?.isError && signUpResult?.error) {
-    // Use a type guard or assertion to narrow down the type
-    if (
-      "data" in signUpResult.error &&
-      typeof signUpResult.error.data === "object" &&
-      signUpResult.error.data !== null
-    ) {
-      // Now you can safely access the 'data' object properties
-      const data = signUpResult.error.data;
-      if ("message" in data && "status" in data) {
-        errStatus = data.status;
-        errMsg = data.message;
-      }
-      // else {
-      //   console.log("Error occurred without 'message' property in 'data'.");
-      // }
-    }
-    //  else {
-    //   console.log(
-    //     "Error occurred without 'data' property or with invalid 'data' type."
-    //   );
-    // }
-  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -189,6 +148,26 @@ const page = () => {
                   {errors?.email?.message}
                 </p>
               )}
+            </span>
+
+            <span>
+              <div className="w-2/3">
+                <label htmlFor="organization">Select Oraganization</label>
+
+                <select
+                  id="organization"
+                  className="w-full  mt-2 border-2  border-gray-600  px-2 py-3"
+                  {...register(`${"organizationType"}`)}
+                >
+                  {oranizationType.map((item) => {
+                    return (
+                      <option key={item} value={item}>
+                        {item}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
             </span>
             <span>
               <input
