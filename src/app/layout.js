@@ -28,8 +28,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <Provider store={store}>
-        <Navbar />
-        <body className={``}>{children}</body>
+        <body>
+          <Navbar />
+          {children}
+          {/* <body className={``}>{children}</body> */}
+        </body>
       </Provider>
     </html>
   );
