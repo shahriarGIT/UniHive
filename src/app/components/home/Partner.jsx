@@ -16,14 +16,14 @@ const Partner = () => {
       {/* className="bg-[url('/images/home-vendor-bd.webp')] */}
       <div className="h-[25rem] relative ">
         <Image
-          src="/images/home-vendor-bd-hq.webp"
+          src="/images/category/learn.jpg"
           width={2000}
           height={1400}
           alt="image of chef cooking"
           className="h-full w-full object-cover bg-top"
         />
       </div>
-      <div className="relative mx-auto md:ml-24 -mt-44 bg-slate-50 w-11/12 md:w-3/5 lg:w-2/5 p-10">
+      <div className="relative mx-auto md:ml-24 -mt-28 bg-slate-50 w-11/12 md:w-3/5 lg:w-2/5 p-10">
         <h2 className="text-2xl text-gray-800">Enjoy Learning </h2>
         <h3 className="text-lg text-gray-600 pt-8">
           Learn together, learn better! Our app empowers you to create and share
