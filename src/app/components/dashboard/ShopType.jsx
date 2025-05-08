@@ -28,11 +28,12 @@ const FeatureType = () => {
     router.push("dashboard/polling");
   };
   const urlShopHandler = () => {
-    if (url.get("type") !== "pandashop") {
-      url.delete("type");
-      url.append("type", "pandashop");
-      router.push(`${pathname}?${url.toString()}`);
-    }
+    // if (url.get("type") !== "pandashop") {
+    //   url.delete("type");
+    //   url.append("type", "pandashop");
+    //   router.push(`${pathname}?${url.toString()}`);
+    // }
+    router.push("dashboard/flashcard");
   };
 
   // router.push(`${pathname}?${url.toString()}`);
