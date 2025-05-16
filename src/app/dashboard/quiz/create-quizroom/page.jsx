@@ -45,7 +45,7 @@ export default function CreateQuizRoomPage() {
       });
 
       alert("Room created successfully!");
-      router.push("/dashboard");
+      router.push(`/dashboard/quiz/room/${roomName}/host`);
     } catch (err) {
       console.error(err);
       alert("Failed to create quiz room.");

@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import io from "socket.io-client";
+import useIsLoggedIn from "@/hooks/useIsLoggedIn";
+import { useAppSelector } from "@/app/store";
 
 let socket; // Declare socket outside the component to manage the connection
 
@@ -12,7 +14,10 @@ export default function JoinQuizRoomPage() {
   const [username, setUsername] = useState("");
   const [error, setError] = useState("");
   // const [participants, setParticipants] = useState([]);
+  const [isLoading, userData, userError] = useIsLoggedIn();
+  const { isLoggedIn, userInfo } = useAppSelector((state) => state.userInfo);
   const router = useRouter();
+  // console.log(userInfo, "userInfo from quiz room manage page");
 
   useEffect(() => {
     // Initialize socket.io connection when the component mounts
@@ -37,7 +42,7 @@ export default function JoinQuizRoomPage() {
       socket.emit("joinRoom", {
         roomName,
         roomPassword,
-        user: { _id: "123123131231", name: username },
+        user: { id: userInfo?.id, name: username },
       });
 
       // Listen for any error during the join attempt

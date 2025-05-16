@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import io from "socket.io-client";
 import { useParams, useRouter } from "next/navigation";
+import useIsLoggedIn from "@/hooks/useIsLoggedIn";
+import { useAppSelector } from "@/app/store";
 
 let socket; // Declare socket outside of component
 
@@ -10,6 +12,8 @@ export default function QuizRoomPage() {
   const [participants, setParticipants] = useState([]);
   const [isHost, setIsHost] = useState(false);
   const [isStarted, setIsStarted] = useState(false);
+  const [isLoading, userData, userError] = useIsLoggedIn();
+  const { isLoggedIn, userInfo } = useAppSelector((state) => state.userInfo);
   // const [roomName, setRoomName] = useState("");
   const router = useRouter();
   const params = useParams();
@@ -25,8 +29,7 @@ export default function QuizRoomPage() {
     // Join the room on page load
     socket.emit("joinRoom", {
       roomName,
-      roomPassword: "r", // Replace with actual password if needed
-      user: { _id: "607f1f77bcf86cd799439011", name: "username" },
+      user: { id: userInfo?.id, name: userInfo?.firstname },
     });
 
     // Listen for the updated participant list
@@ -47,27 +50,25 @@ export default function QuizRoomPage() {
     });
 
     return () => {
-      if (socket) {
-        socket.disconnect();
-      }
+      socket.disconnect();
     };
-  }, []);
+  }, [roomName, userInfo]);
 
-  useEffect(() => {
-    let isRoomHost = participants.some(
-      (participant) => participant.userId === "607f1f77bcf86cd799439011"
-    );
-    console.log("Participants:", participants);
+  // useEffect(() => {
+  //   let isRoomHost = participants.some(
+  //     (participant) => participant.userId === "607f1f77bcf86cd799439011"
+  //   );
+  //   console.log("Participants:", participants);
 
-    // participants.forEach((participant) => {
-    //   if (participant.userId === "607f1f77bcf86cd799439011") {
-    //     isRoomHost = true;
-    //     console.log("Is host:", isRoomHost);
-    //   }
-    // });
+  //   // participants.forEach((participant) => {
+  //   //   if (participant.userId === "607f1f77bcf86cd799439011") {
+  //   //     isRoomHost = true;
+  //   //     console.log("Is host:", isRoomHost);
+  //   //   }
+  //   // });
 
-    setIsHost(isRoomHost);
-  }, [participants]);
+  //   setIsHost(isRoomHost);
+  // }, [participants]);
 
   const handleStartQuiz = () => {
     console.log(params);
@@ -93,11 +94,12 @@ export default function QuizRoomPage() {
       <div className="w-full max-w-md space-y-4">
         <h2 className="text-lg font-semibold">Participants:</h2>
         <ul className="space-y-2">
-          {participants.map((participant) => (
-            <li key={participant.userId} className="text-sm text-gray-700">
-              {participant.username}
-            </li>
-          ))}
+          {participants &&
+            participants?.participants?.map((participant) => (
+              <li key={participant._id} className="text-sm text-gray-700">
+                {participant.name}
+              </li>
+            ))}
         </ul>
         {/* isHost && !isStarted &&  */}
         {isHost && true && (

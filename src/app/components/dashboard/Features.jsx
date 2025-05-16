@@ -99,7 +99,7 @@ const Features = () => {
     row: 1,
   };
   return (
-    <div className="mt-14 cuisine-class ">
+    <div className="mt-14 cuisine-class shadow-md shadow-gray-100">
       <div className="pl-5 xs:pl-14 md:pl-20 translate-y-5">
         <h1 className="text-lg md:text-xl lg:text-3xl font-extralight text-gray-900">
           Categories

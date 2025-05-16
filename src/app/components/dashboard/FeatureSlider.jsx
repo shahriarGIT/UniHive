@@ -59,10 +59,13 @@ const FeatureSlider = ({ imagesInfo }) => {
   };
 
   return (
-    <div id="slider-container" className="px-20  mt-10">
+    <div id="slider-container" className="px-20  mt-10 ">
       <Slider {...settings}>
         {imagesInfo.map((item) => (
-          <div className="bg-slate-100 rounded-md mr-3 w-20 " key={item.id}>
+          <div
+            className="bg-slate-100 rounded-2xl mr-3 w-20 shadow-gray-300 shadow-md "
+            key={item.id}
+          >
             <Image
               onClick={() => urlHandler(item.code)}
               width={item.width}
