@@ -1,13 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import io from "socket.io-client";
 import { useParams, useRouter } from "next/navigation";
 import useIsLoggedIn from "@/hooks/useIsLoggedIn";
 import { useAppSelector } from "@/app/store";
+import io from "socket.io-client";
 
-let socket; // Declare socket outside of component
+import { useSearchParams } from "next/navigation";
 
+let socket; // Declare socket outside the component to manage the connection
 export default function QuizRoomPage() {
   const [participants, setParticipants] = useState([]);
   const [isHost, setIsHost] = useState(false);
@@ -18,6 +19,9 @@ export default function QuizRoomPage() {
   const router = useRouter();
   const params = useParams();
   const roomName = params.roomName;
+  const searchParams = useSearchParams();
+
+  const usernameParam = searchParams.get("username");
   useEffect(() => {
     // const roomId = router.query.roomId; // Get the room ID from the URL
 
@@ -29,7 +33,7 @@ export default function QuizRoomPage() {
     // Join the room on page load
     socket.emit("joinRoom", {
       roomName,
-      user: { id: userInfo?.id, name: userInfo?.firstname },
+      user: { id: userInfo?.id, name: usernameParam },
     });
 
     // Listen for the updated participant list
@@ -44,13 +48,16 @@ export default function QuizRoomPage() {
       // router.push(`/dashboard/quiz/quiz-test/${roomName}`);
       console.log(quizId);
 
-      router.push(`/dashboard/quiz/room/${roomName}/quiz-test/${quizId}`);
+      router.push(
+        `/dashboard/quiz/room/${roomName}/quiz-test/${quizId}?username=${usernameParam}`
+      );
       setIsStarted(true);
       console.log("Quiz started!");
     });
 
     return () => {
-      socket.disconnect();
+      // socket.disconnect();
+      socket.off("quizStarted");
     };
   }, [roomName, userInfo]);
 
@@ -84,6 +91,7 @@ export default function QuizRoomPage() {
 
   const handleLeaveRoom = () => {
     socket.emit("leaveRoom", roomName); // Emit to server to leave the room
+    socket.disconnect(); // Emit to server to leave the room
     router.push("/dashboard"); // Redirect back to dashboard
   };
 

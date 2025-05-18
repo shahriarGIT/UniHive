@@ -2,10 +2,12 @@
 import { useState, useEffect } from "react";
 
 import { useParams, useRouter } from "next/navigation";
-import socket from "@/utils/socket";
+// import socket from "@/utils/socket";
 import useIsLoggedIn from "@/hooks/useIsLoggedIn";
 import { useAppSelector } from "@/app/store";
+import io from "socket.io-client";
 
+let socket;
 export default function QuizRoomManagePage() {
   const [participants, setParticipants] = useState([]);
   const router = useRouter();
@@ -13,9 +15,53 @@ export default function QuizRoomManagePage() {
   const [isLoading, userData, userError] = useIsLoggedIn();
   const { isLoggedIn, userInfo } = useAppSelector((state) => state.userInfo);
   const [host, setHost] = useState(null);
+  const [isHost, setIsHost] = useState(null);
+  const [quizStats, setQuizStats] = useState([]);
+
+  const [sessionStarted, setSessionStarted] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [showAnswer, setShowAnswer] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  // Calculate statistics
+  const completedCount = participants.filter(
+    (p) => p.status === "completed"
+  ).length;
+  const inProgressCount = participants.filter(
+    (p) => p.status === "in-progress"
+  ).length;
+  const notStartedCount = participants.filter(
+    (p) => p.status === "not-started"
+  ).length;
+
+  // Sample flashcard data (this would be fetched in a real app)
+  const flashcard = {
+    name: "Advanced JavaScript Concepts",
+    subject: "Programming",
+    topic: "JavaScript",
+    date: new Date().toISOString(),
+    questions: [
+      {
+        question: "What is a closure in JavaScript?",
+        answer:
+          "A closure is the combination of a function bundled together with references to its surrounding state (the lexical environment).",
+      },
+      {
+        question: "Explain prototypal inheritance",
+        answer:
+          "Objects can inherit properties directly from other objects. JavaScript's prototype mechanism.",
+      },
+      {
+        question: "What is a promise in JavaScript?",
+        answer:
+          "A Promise is an object representing the eventual completion or failure of an asynchronous operation.",
+      },
+    ],
+  };
 
   useEffect(() => {
     if (!userInfo?.id || !roomName) return;
+    socket = io("http://localhost:3001");
 
     // Join the room
     socket.emit("joinRoom", {
@@ -29,41 +75,175 @@ export default function QuizRoomManagePage() {
       setHost(host);
       console.log("Updated participants:", participants);
       console.log("Host:", host);
+      setHost(host);
+
+      if (userInfo?.id === host?._id) {
+        setIsHost(true);
+      } else {
+        setIsHost(false);
+      }
+    });
+
+    socket.on("quizStatsUpdate", ({ updatedParticipants }) => {
+      setQuizStats(updatedParticipants);
     });
 
     // Listen for quiz start
     socket.on("quizStarted", ({ quizId }) => {
-      router.push(`/dashboard/quiz/room/${roomName}/quiz-test/${quizId}`);
+      // router.push(`/dashboard/quiz/room/${roomName}/quiz-test/${quizId}`);
     });
 
     return () => {
       socket.off("participantsUpdate");
       socket.off("quizStarted");
+      socket.off("quizStatsUpdate");
+      socket.disconnect();
     };
   }, [roomName, userInfo]);
   console.log(participants, "participants");
+  console.log(quizStats, "quizStats");
 
+  // count number of completed true boolean in quizStats
+  const finishedCount = quizStats.filter(
+    (user) => user.completed === true
+  ).length;
+
+  let countProgress = (finishedCount / participants.length) * 100;
   const handleStart = () => {
     socket.emit("startQuiz", { roomName });
   };
 
+  const handleEnd = () => {
+    socket.emit("endQuiz", { roomName });
+    // router.push("/dashboard");
+  };
+
   return (
-    <div>
-      <h1>Room: {roomName}</h1>
-      <h2 className="text-lg font-semibold mb-2">
-        Host: {host?.name || "Loading..."}
-      </h2>
+    // <div>
+    //   <h1>Room: {roomName}</h1>
+    //   <h2 className="text-lg font-semibold mb-2">
+    //     Host: {host?.name || "Loading..."}
+    //   </h2>
 
-      <p>Waiting for participants to join...</p>
-      <ul>
-        <ul>
-          {participants.map((p) => (
-            <li key={p._id}>{p.name} </li>
-          ))}
-        </ul>
-      </ul>
+    //   <p>Waiting for participants to join...</p>
+    //   <ul>
+    //     <ul>
+    //       {participants.map((p) => (
+    //         <li key={p._id}>{p.name} </li>
+    //       ))}
+    //     </ul>
+    //   </ul>
 
-      <button onClick={handleStart}>Start Quiz</button>
+    //   <button onClick={handleStart}>Start Quiz</button>
+    // </div>
+    <div className="bg-white rounded-xl shadow-md p-6 border border-purple-100">
+      <div className="min-h-[80vh] py-8 px-4 bg-gradient-to-b from-purple-50 to-white">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-8 border border-purple-100">
+            <div className="bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-6">
+              <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                Room: {roomName}
+              </h1>
+              <div className="flex flex-wrap gap-2">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-white/20 text-white">
+                  Host: {host?.name || "Loading..."}
+                </span>
+                {isHost && (
+                  <div className="text-sm text-gray-500">
+                    quizStats.completedCount 10 / quizStats.totalParticipants 20{" "}
+                    users completed the quiz.
+                  </div>
+                )}
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-white/20 text-white">
+                  Topic: {flashcard.topic}
+                </span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-white/20 text-white">
+                  Questions: {currentIndex + 1}/{flashcard.questions.length}
+                </span>
+              </div>
+            </div>
+
+            <div className="p-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div className="bg-indigo-50 p-4 rounded-lg shadow-sm text-center border border-indigo-100">
+                  <p className="text-xs text-gray-500 mb-1">Participants</p>
+                  <p className="text-2xl font-bold text-indigo-600">
+                    {participants.length}
+                  </p>
+                </div>
+                <div className="bg-green-50 p-4 rounded-lg shadow-sm text-center border border-green-100">
+                  <p className="text-xs text-gray-500 mb-1">Completed</p>
+                  <p className="text-2xl font-bold text-green-600">
+                    {finishedCount}
+                  </p>
+                </div>
+                <div className="bg-blue-50 p-4 rounded-lg shadow-sm text-center border border-blue-100">
+                  <p className="text-xs text-gray-500 mb-1">In Progress</p>
+                  <p className="text-2xl font-bold text-blue-600">
+                    {countProgress.toFixed(2)}%
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-xl shadow-md p-6 border border-purple-100">
+                <h2 className="text-lg font-semibold mb-4 text-indigo-700 flex items-center justify-between">
+                  <span>Participants Status</span>
+                  <span className="text-sm px-2.5 py-1 bg-indigo-100 text-indigo-800 rounded-full">
+                    {participants.length} total
+                  </span>
+                </h2>
+                <div className="max-h-64 overflow-y-auto pr-1">
+                  <ul className="space-y-2">
+                    {participants.map((participant) => (
+                      <li
+                        key={participant.id}
+                        className="py-3 px-4 flex items-center justify-between bg-gray-50 rounded-lg border border-gray-100"
+                      >
+                        <span className="font-medium text-gray-800">
+                          {participant.name}
+                        </span>
+                        <span
+                          className={`text-xs px-2.5 py-1 rounded-full ${
+                            participant.completed === true
+                              ? "bg-green-100 text-green-800"
+                              : participant.completed === false
+                              ? "bg-blue-100 text-blue-800"
+                              : "bg-gray-100 text-gray-600"
+                          }`}
+                        >
+                          {participant.completed === true
+                            ? "Completed"
+                            : participant.completed === false
+                            ? "In Progress"
+                            : "Not Started"}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="flex flex-col sm:flex-row sm:justify-between mt-8 gap-4">
+                  <div className="flex gap-4">
+                    <button
+                      onClick={handleEnd}
+                      className="px-5 py-2.5 bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium"
+                    >
+                      End Session
+                    </button>
+                  </div>
+                  <div className="flex gap-4">
+                    <button
+                      onClick={handleStart}
+                      className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium"
+                    >
+                      Start Session
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

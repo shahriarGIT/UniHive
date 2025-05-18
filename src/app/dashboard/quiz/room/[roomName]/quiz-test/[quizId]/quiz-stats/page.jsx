@@ -1,29 +1,48 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter, useParams, useSearchParams } from "next/navigation";
 import io from "socket.io-client";
+import useIsLoggedIn from "@/hooks/useIsLoggedIn";
+import { useAppSelector } from "@/app/store";
 
 let socket;
 
 export default function QuizStatsPage() {
   const [correctCount, setCorrectCount] = useState(0);
-  const [finishedUsers, setFinishedUsers] = useState(1); // this user has finished
+  const [finishedUsers, setFinishedUsers] = useState([]); // this user has finished
+  const [isLoading, userData, userError] = useIsLoggedIn();
+  const { isLoggedIn, userInfo } = useAppSelector((state) => state.userInfo);
   const router = useRouter();
   const params = useParams();
+  const [myScore, setMyScore] = useState(0);
+  const { score } = useAppSelector((state) => state.userData);
 
   const { roomName, quizId } = params;
+  const searchParams = useSearchParams();
 
+  const usernameParam = searchParams.get("username");
   useEffect(() => {
     // Connect to socket server
     socket = io("http://localhost:3001");
 
+    socket.emit("joinRoom", {
+      roomName,
+      user: { id: userInfo?.id, name: usernameParam },
+    });
+
+    socket.emit("quizFinished", {
+      roomName,
+      userId: userInfo?.id,
+    });
+
     // Join room for real-time updates
     socket.emit("joinStatsRoom", { roomName });
+    socket.on("yourScore", ({ score }) => setMyScore(score));
 
     // Get real-time finished count updates
-    socket.on("quizStatsUpdate", ({ finishedCount }) => {
-      setFinishedUsers(finishedCount);
+    socket.on("quizStatsUpdate", ({ updatedParticipants }) => {
+      setFinishedUsers(updatedParticipants);
     });
 
     // Optional: Fetch user's own result if not passed during navigation
@@ -44,9 +63,14 @@ export default function QuizStatsPage() {
     });
 
     return () => {
-      socket.disconnect();
+      // socket.disconnect();
     };
   }, [roomName]);
+  console.log(finishedUsers, "finishedUsers");
+  // count number of completed true boolean in finishedUsers
+  const finishedCount = finishedUsers.filter(
+    (user) => user.completed === true
+  ).length;
 
   const handleReturnToDashboard = () => {
     router.push("/dashboard");
@@ -58,10 +82,10 @@ export default function QuizStatsPage() {
 
       <div className="bg-gray-100 p-6 rounded-lg shadow-md w-full max-w-md text-center">
         <p className="text-lg mb-4">
-          ✅ Your Correct Answers: <strong>{correctCount}</strong>
+          ✅ Your Correct Answers: <strong>{score}</strong>
         </p>
         <p className="text-lg mb-4">
-          👥 Participants Finished: <strong>{finishedUsers}</strong>
+          👥 Participants Finished: <strong>{finishedCount}</strong>
         </p>
 
         <button

@@ -1,10 +1,12 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function QuizDetailPage({ params }) {
+export default function QuizDetailPage() {
+  const params = useParams();
+
   const { quizId } = params;
   const [quiz, setQuiz] = useState(null);
   const router = useRouter();

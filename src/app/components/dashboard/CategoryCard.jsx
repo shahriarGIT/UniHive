@@ -20,7 +20,7 @@ export default function CategoryCard() {
 
     fetchQuizzes();
   }, []);
-
+  // min-h-screen bg-gradient-to-br from-indigo-50 to-purple-100
   return (
     <div className=" mt-14 xs:pl-5 md:px-20 ">
       <h1 className="text-3xl font-bold mb-6">Available Quizzes</h1>
@@ -40,7 +40,7 @@ export default function CategoryCard() {
           <Link
             key={quiz._id}
             href={`dashboard/quiz/${quiz._id}`}
-            className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition"
+            className="bg-gradient-to-br from-indigo-50 to-purple-100 p-6 rounded-xl shadow hover:shadow-lg transition"
           >
             <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-6">
               <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center">

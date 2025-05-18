@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import axios from "axios";
+import useIsLoggedIn from "@/hooks/useIsLoggedIn";
+import { useAppSelector } from "@/app/store";
 
 export default function CreateQuizRoomPage() {
   const searchParams = useSearchParams();
@@ -14,6 +16,8 @@ export default function CreateQuizRoomPage() {
   const [roomPassword, setRoomPassword] = useState("");
   const [timerEnabled, setTimerEnabled] = useState(false);
   const [timerDuration, setTimerDuration] = useState("");
+  const [isLoading, userData, userError] = useIsLoggedIn();
+  const { isLoggedIn, userInfo } = useAppSelector((state) => state.userInfo);
 
   useEffect(() => {
     if (quizId) {
@@ -41,7 +45,7 @@ export default function CreateQuizRoomPage() {
         roomPassword,
         timerEnabled,
         timerDuration: timerEnabled ? parseInt(timerDuration) : undefined,
-        hostId: "607f1f77bcf86cd799439011", // Placeholder
+        hostId: userInfo?.id, // Placeholder
       });
 
       alert("Room created successfully!");

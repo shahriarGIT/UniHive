@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import io from "socket.io-client";
 import useIsLoggedIn from "@/hooks/useIsLoggedIn";
 import { useAppSelector } from "@/app/store";
+import { useSearchParams } from "next/navigation";
 
 let socket; // Declare socket outside the component to manage the connection
 
@@ -17,6 +18,7 @@ export default function JoinQuizRoomPage() {
   const [isLoading, userData, userError] = useIsLoggedIn();
   const { isLoggedIn, userInfo } = useAppSelector((state) => state.userInfo);
   const router = useRouter();
+
   // console.log(userInfo, "userInfo from quiz room manage page");
 
   useEffect(() => {
@@ -39,21 +41,22 @@ export default function JoinQuizRoomPage() {
 
     try {
       // Send join request to the server to validate the room
-      socket.emit("joinRoom", {
-        roomName,
-        roomPassword,
-        user: { id: userInfo?.id, name: username },
-      });
+      // socket.emit("joinRoom", {
+      //   roomName,
+      //   roomPassword,
+      //   user: { id: userInfo?.id, name: username },
+      // });
 
       // Listen for any error during the join attempt
       socket.on("joinError", (error) => {
         setError(error.message);
       });
+      router.push(`quiz-lobby/${roomName}?username=${username}`); // Redirect to the quiz room page
 
       // Listen for updated participants list upon successful room join
       socket.on("participantsUpdate", (updatedParticipants) => {
         // setParticipants(updatedParticipants);
-        router.push(`quiz-lobby/${roomName}`); // Redirect to the quiz room page
+        // router.push(`quiz-lobby/${roomName}?username=${username}`); // Redirect to the quiz room page
       });
     } catch (err) {
       console.error("Error joining room", err);
