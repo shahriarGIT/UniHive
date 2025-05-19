@@ -31,7 +31,7 @@ body {
 /* #e21b70 */
 .slick-prev,
 .slick-next {
-  background-color: #e21b70 !important;
+  background-color: #4f39f6c8 !important;
   border-radius: 0.5rem !important;
   z-index: 20;
 }
@@ -54,7 +54,7 @@ body {
 
 .slick-next:hover,
 .slick-prev:hover {
-  background-color: rgb(230, 0, 115) !important;
+  background-color: #3e34bdc8 !important;
 }
 
 .slick-disabled {

@@ -22,6 +22,7 @@ export default function QuizRoomManagePage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isStarted, setIsStarted] = useState(false);
 
   // Calculate statistics
   const completedCount = participants.filter(
@@ -84,7 +85,8 @@ export default function QuizRoomManagePage() {
       }
     });
 
-    socket.on("quizStatsUpdate", ({ updatedParticipants }) => {
+    socket.on("quizStatsUpdate", ({ updatedParticipants, topThree }) => {
+      setParticipants(updatedParticipants);
       setQuizStats(updatedParticipants);
     });
 
@@ -111,11 +113,13 @@ export default function QuizRoomManagePage() {
   let countProgress = (finishedCount / participants.length) * 100;
   const handleStart = () => {
     socket.emit("startQuiz", { roomName });
+    setIsStarted(true);
   };
 
   const handleEnd = () => {
     socket.emit("endQuiz", { roomName });
     // router.push("/dashboard");
+    setIsStarted(false);
   };
 
   return (
@@ -136,7 +140,7 @@ export default function QuizRoomManagePage() {
 
     //   <button onClick={handleStart}>Start Quiz</button>
     // </div>
-    <div className="bg-white rounded-xl shadow-md p-6 border border-purple-100">
+    <div className="bg-white rounded-xl border border-purple-100">
       <div className="min-h-[80vh] py-8 px-4 bg-gradient-to-b from-purple-50 to-white">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-8 border border-purple-100">
@@ -148,12 +152,12 @@ export default function QuizRoomManagePage() {
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-white/20 text-white">
                   Host: {host?.name || "Loading..."}
                 </span>
-                {isHost && (
+                {/* {isHost && (
                   <div className="text-sm text-gray-500">
                     quizStats.completedCount 10 / quizStats.totalParticipants 20{" "}
                     users completed the quiz.
                   </div>
-                )}
+                )} */}
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-white/20 text-white">
                   Topic: {flashcard.topic}
                 </span>
@@ -168,7 +172,7 @@ export default function QuizRoomManagePage() {
                 <div className="bg-indigo-50 p-4 rounded-lg shadow-sm text-center border border-indigo-100">
                   <p className="text-xs text-gray-500 mb-1">Participants</p>
                   <p className="text-2xl font-bold text-indigo-600">
-                    {participants.length}
+                    {participants.length - 1 < 0 ? 0 : participants.length - 1}{" "}
                   </p>
                 </div>
                 <div className="bg-green-50 p-4 rounded-lg shadow-sm text-center border border-green-100">
@@ -189,43 +193,75 @@ export default function QuizRoomManagePage() {
                 <h2 className="text-lg font-semibold mb-4 text-indigo-700 flex items-center justify-between">
                   <span>Participants Status</span>
                   <span className="text-sm px-2.5 py-1 bg-indigo-100 text-indigo-800 rounded-full">
-                    {participants.length} total
+                    {participants.length - 1 < 0 ? 0 : participants.length - 1}{" "}
+                    total
                   </span>
                 </h2>
                 <div className="max-h-64 overflow-y-auto pr-1">
                   <ul className="space-y-2">
-                    {participants.map((participant) => (
+                    {/* {participants.map((participant) => (
                       <li
                         key={participant.id}
                         className="py-3 px-4 flex items-center justify-between bg-gray-50 rounded-lg border border-gray-100"
                       >
                         <span className="font-medium text-gray-800">
-                          {participant.name}
+                          {participant.name || participant.username}
                         </span>
                         <span
                           className={`text-xs px-2.5 py-1 rounded-full ${
-                            participant.completed === true
+                            isStarted && participant.completed === true
                               ? "bg-green-100 text-green-800"
-                              : participant.completed === false
+                              : isStarted && participant.completed === false
                               ? "bg-blue-100 text-blue-800"
-                              : "bg-gray-100 text-gray-600"
+                              : "bg-amber-200 text-gray-600"
                           }`}
                         >
-                          {participant.completed === true
+                          {isStarted && participant.completed === true
                             ? "Completed"
-                            : participant.completed === false
+                            : isStarted && participant.completed === false
                             ? "In Progress"
                             : "Not Started"}
                         </span>
                       </li>
-                    ))}
+                    ))} */}
+                    {participants
+                      .filter((p) => p._id?.toString() !== host._id.toString()) // 👈 exclude host
+                      .map((participant) => (
+                        <li
+                          key={participant.userId}
+                          className="py-3 px-4 flex items-center justify-between bg-gray-50 rounded-lg border border-gray-100"
+                        >
+                          <span className="font-medium text-gray-800">
+                            {participant.name || participant.username}
+                          </span>
+
+                          <span
+                            className={`text-xs px-2.5 py-1 rounded-full ${
+                              isStarted && participant.completed
+                                ? "bg-green-100 text-green-800"
+                                : isStarted
+                                ? "bg-blue-100 text-blue-800"
+                                : "bg-amber-200 text-gray-600"
+                            }`}
+                          >
+                            {isStarted
+                              ? participant.completed
+                                ? "Completed"
+                                : "In Progress"
+                              : "Not Started"}
+                          </span>
+                        </li>
+                      ))}
                   </ul>
                 </div>
                 <div className="flex flex-col sm:flex-row sm:justify-between mt-8 gap-4">
                   <div className="flex gap-4">
                     <button
                       onClick={handleEnd}
-                      className="px-5 py-2.5 bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium"
+                      disabled={!isStarted}
+                      className={`px-5 py-2.5  hover:bg-red-600 text-white rounded-lg font-medium ${
+                        isStarted ? "bg-red-600" : "bg-red-400"
+                      }`}
                     >
                       End Session
                     </button>
@@ -233,7 +269,10 @@ export default function QuizRoomManagePage() {
                   <div className="flex gap-4">
                     <button
                       onClick={handleStart}
-                      className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium"
+                      disabled={isStarted}
+                      className={`px-5 py-2.5  hover:bg-indigo-700 text-white rounded-lg font-medium ${
+                        isStarted ? "bg-indigo-300" : "bg-indigo-600"
+                      }`}
                     >
                       Start Session
                     </button>

@@ -47,8 +47,19 @@ export default function QuizTestPage() {
       // You can set to state: setStats(stats)
     });
 
+    socket.on("quizForceEnded", () => {
+      // Optional: auto-submit unanswered questions before leaving
+      // submitAnswersSilently();
+
+      // router.replace(
+      //   `/dashboard/quiz/room/${roomName}/quiz-test/${quizId}/quiz-stats?username=${usernameParam}`
+      // );
+      handleSubmit();
+    });
+
     return () => {
       socket.off("quizStatsUpdate");
+      socket.off("quizForceEnded");
     };
   }, []);
 
@@ -94,7 +105,7 @@ export default function QuizTestPage() {
 
       // Step 4: Redirect or navigate to stats page
       router.push(
-        `/dashboard/quiz/room/${roomName}/quiz-test/${quizId}/quiz-stats`
+        `/dashboard/quiz/room/${roomName}/quiz-test/${quizId}/quiz-stats?username=${usernameParam}`
       );
     } catch (err) {
       console.error("Error submitting quiz:", err);

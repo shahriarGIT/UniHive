@@ -73,11 +73,11 @@ export default function Home() {
       <main>
         <div className="flex items-center relative z-50  h-[60vh] md:h-[80vh]  md:-mt-[6rem]  lg:h-[100vh] lg:-mt-[2rem] ">
           <div className="w-5/5  md:w-4/5  md:-mt-48">
-            <h1 className="relative pl-10 md:pl-[3rem] w-4/4  font-light text-4xl">
+            <h1 className="relative pl-10 md:pl-[3rem] w-4/4  font-bold text-4xl">
               Interactive learning for everyone.
             </h1>
             <span className=" w-11/12    lg:w-4/5  left-[50%] lg:left-[43%] -translate-x-[50%] lg: mt-[6rem] absolute md:inline-flex md:gap-4 md:pt-3 md:pl-4 md:px-5 md:shadow-lg ">
-              <input
+              {/* <input
                 // @ts-ignore
                 autoComplete="off"
                 className="w-full  md:w-3/6   h-16 rounded-md shadow-lg md:shadow-none pl-3 mb-5 outline-gray-300 outline-1"
@@ -106,7 +106,7 @@ export default function Home() {
                     Please enter a location
                   </h3>
                 </div>
-              }
+              } */}
               {/* {inputValue && (
                 <ul className=" absolute top-0 left-1 lg:left-3 w-2/3 lg:w-1/3 bg-white mt-[4.1rem] md:mt-[4.8rem]  lg:mt-20 z-[500]">
                   {location

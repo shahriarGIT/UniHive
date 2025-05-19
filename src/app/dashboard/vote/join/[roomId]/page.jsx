@@ -75,7 +75,7 @@ export default function JoinRoomPage() {
   };
   return (
     <div className="p-6 max-w-2xl mx-auto">
-      <div className="flex justify-between items-center mb-6">
+      {/* <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Room: {roomId}</h1>
         <button
           onClick={handleEndRoom}
@@ -83,8 +83,43 @@ export default function JoinRoomPage() {
         >
           End Room
         </button>
+      </div> */}
+      <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-6 mb-8">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <span className="text-sm font-medium text-purple-600">
+              Active Session
+            </span>
+            <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-2">
+              Room: {roomId}
+              <span className="flex h-3 w-3 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+              </span>
+            </h1>
+          </div>
+          <button
+            onClick={handleEndRoom}
+            className="bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white px-5 py-2.5 rounded-lg font-medium transition-all shadow-md hover:shadow-lg flex items-center gap-2"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+              <line x1="12" y1="2" x2="12" y2="12"></line>
+            </svg>
+            End Room
+          </button>
+        </div>
       </div>
-      <div className="bg-white shadow rounded p-4">
+      {/* <div className="bg-white shadow rounded p-4">
         <h2 className="text-xl font-semibold mb-2">Live Participants</h2>
         {users.length === 0 ? (
           <p className="text-gray-500">No users joined yet.</p>
@@ -97,6 +132,74 @@ export default function JoinRoomPage() {
             ))}
           </ul>
         )}
+      </div> */}
+      <div>
+        <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-6">
+          <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 mr-2 text-purple-600"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            Live Participants
+            <span className="ml-2 bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+              {users.length}
+            </span>
+          </h2>
+
+          {users.length === 0 ? (
+            <div className="bg-gray-50 rounded-xl p-6 text-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-10 w-10 mx-auto text-gray-400 mb-3"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+              <p className="text-gray-500">No users joined yet</p>
+            </div>
+          ) : (
+            <div>
+              <div className="space-y-3 mt-3">
+                {users.map((user) => (
+                  <div
+                    key={user.userId}
+                    className="flex items-center p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
+                  >
+                    <div className="flex-shrink-0">
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-indigo-500 flex items-center justify-center text-white font-medium">
+                        {user.firstname.charAt(0)}
+                      </div>
+                    </div>
+                    <div className="ml-3">
+                      <p className="text-sm font-medium text-gray-800">
+                        {user.firstname}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
       {roomEnded ? (
         <div className="text-center text-xl font-semibold text-red-600">
@@ -138,7 +241,18 @@ export default function JoinRoomPage() {
         </div>
       ) : (
         <div className="text-center text-gray-500">
-          Waiting for host to go live...
+          <div className="flex flex-col mt-14 p-6 rounded-2xl sm:flex-row justify-between items-start sm:items-center gap-4 bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700">
+            <h1 className="font-black text-white text-3xl ">
+              {" "}
+              Waiting for host to go live...{" "}
+            </h1>
+
+            <span className="flex h-3 w-3 relative">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-700 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+            </span>
+          </div>
+
           {hasVoted && Object.keys(voteResults).length > 0 && (
             <div className="mt-6">
               <h2 className="text-lg font-semibold mb-4">Live Results</h2>

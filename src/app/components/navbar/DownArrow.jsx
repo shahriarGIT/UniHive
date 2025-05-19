@@ -8,7 +8,7 @@ const DownArrow = () => {
         strokeLinejoin="round"
         strokeLinecap="round"
         fillRule="evenodd"
-        fill="#D70F64"
+        fill="#4f39f6c8"
         d="m3.5,1.5l5,5.5l-5,5.5"
       ></path>
     </svg>
