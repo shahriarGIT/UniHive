@@ -11,9 +11,9 @@ export default function CreateFlashcardPage() {
 
   const router = useRouter();
   const [formData, setFormData] = useState({
-    name: "",
+    title: "",
     subject: "",
-    topic: "",
+    category: "",
     description: "",
     isPublic: false,
     date: new Date().toISOString().split("T")[0],
@@ -57,7 +57,7 @@ export default function CreateFlashcardPage() {
     setError("");
 
     if (
-      !formData.name.trim() ||
+      !formData.title.trim() ||
       questions.some((q) => !q.question.trim() || !q.answer.trim())
     ) {
       setError("Please fill in all required fields");
@@ -87,7 +87,7 @@ export default function CreateFlashcardPage() {
 
       if (!response.ok) throw new Error("Failed to create flashcard");
 
-      router.push("dashboard/flashcard");
+      router.push("/dashboard/flashcard");
     } catch (err) {
       setError(err.message || "Something went wrong");
     } finally {
@@ -103,11 +103,11 @@ export default function CreateFlashcardPage() {
         {/* Basic Info Section */}
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1">Name *</label>
+            <label className="block text-sm font-medium mb-1">Title *</label>
             <input
               type="text"
-              name="name"
-              value={formData.name}
+              name="title"
+              value={formData.title}
               onChange={handleInputChange}
               className="w-full p-2 border rounded"
               required
@@ -126,14 +126,20 @@ export default function CreateFlashcardPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Topic</label>
-              <input
-                type="text"
-                name="topic"
-                value={formData.topic}
+              <label className="block text-sm font-medium mb-1">Category</label>
+              <select
+                name="category"
+                value={formData.category}
                 onChange={handleInputChange}
                 className="w-full p-2 border rounded"
-              />
+              >
+                <option value="">Select a topic</option>
+                <option value="Maths">Maths</option>
+                <option value="Physics">Physics</option>
+                <option value="Biology">Biology</option>
+                <option value="General Knowledge">General Knowledge</option>
+                <option value="General Knowledge">Programming</option>
+              </select>
             </div>
           </div>
 

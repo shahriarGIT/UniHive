@@ -68,6 +68,7 @@ export default function QuizStatsPage() {
 
   const handleReturnToDashboard = () => {
     // navigate("/");
+    router.push("/dashboard");
   };
 
   return (
@@ -164,7 +165,8 @@ function LeaderBoard({ rows }) {
                     </div>
                     <div className="mt-auto text-center">
                       <p className="text-gray-800 font-medium text-base truncate">
-                        {rows[1].userId}
+                        {/* {rows[1].userId} */}
+                        User B
                       </p>
                       <div className="flex items-center justify-center mt-1 space-x-1">
                         <span className="font-bold text-xl text-gray-800">
@@ -190,7 +192,8 @@ function LeaderBoard({ rows }) {
                   </div>
                   <div className="mt-auto text-center">
                     <p className="text-gray-800 font-semibold text-lg truncate">
-                      {rows[0].userId}
+                      {/* {rows[0].userId} */}
+                      User A
                     </p>
                     <div className="flex items-center justify-center mt-2 space-x-2">
                       <span className="font-bold text-3xl text-amber-800">
@@ -218,7 +221,8 @@ function LeaderBoard({ rows }) {
                     </div>
                     <div className="mt-auto text-center">
                       <p className="text-gray-800 font-medium text-base truncate">
-                        {rows[2].userId}
+                        {/* {rows[2].userId} */}
+                        User C
                       </p>
                       <div className="flex items-center justify-center mt-1 space-x-1">
                         <span className="font-bold text-xl text-gray-800">

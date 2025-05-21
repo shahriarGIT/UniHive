@@ -75,15 +75,6 @@ export default function JoinRoomPage() {
   };
   return (
     <div className="p-6 max-w-2xl mx-auto">
-      {/* <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Room: {roomId}</h1>
-        <button
-          onClick={handleEndRoom}
-          className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg"
-        >
-          End Room
-        </button>
-      </div> */}
       <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-6 mb-8">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
@@ -119,20 +110,6 @@ export default function JoinRoomPage() {
           </button>
         </div>
       </div>
-      {/* <div className="bg-white shadow rounded p-4">
-        <h2 className="text-xl font-semibold mb-2">Live Participants</h2>
-        {users.length === 0 ? (
-          <p className="text-gray-500">No users joined yet.</p>
-        ) : (
-          <ul className="list-disc pl-6">
-            {users.map((user) => (
-              <li key={user.userId} className="text-gray-800">
-                {user.firstname}
-              </li>
-            ))}
-          </ul>
-        )}
-      </div> */}
       <div>
         <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-6">
           <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
@@ -209,20 +186,30 @@ export default function JoinRoomPage() {
         <div className="bg-white p-6 rounded-lg shadow">
           <h1 className="text-2xl font-bold mb-4">{liveQuestion.title}</h1>
           <div className="grid gap-3">
-            {liveQuestion.options.map((opt, idx) => (
-              <button
-                key={idx}
-                disabled={hasVoted}
-                onClick={() => handleVote(opt)}
-                className={`px-4 py-2 rounded-lg border ${
-                  hasVoted
-                    ? "bg-gray-300"
-                    : "bg-blue-600 hover:bg-blue-700 text-white"
-                }`}
-              >
-                {opt}
-              </button>
-            ))}
+            {liveQuestion.type === "opinion" ? (
+              /* ⬇ Opinion chart UI */
+              <OpinionChart
+                question={liveQuestion}
+                voteResults={voteResults}
+                hasVoted={hasVoted}
+                onVote={handleVote}
+              />
+            ) : (
+              liveQuestion.options.map((opt, idx) => (
+                <button
+                  key={idx}
+                  disabled={hasVoted}
+                  onClick={() => handleVote(opt)}
+                  className={`px-4 py-2 rounded-lg border ${
+                    hasVoted
+                      ? "bg-gray-300"
+                      : "bg-blue-600 hover:bg-blue-700 text-white"
+                  }`}
+                >
+                  {opt}
+                </button>
+              ))
+            )}
           </div>
 
           {hasVoted && (
@@ -288,3 +275,44 @@ export default function JoinRoomPage() {
     </div>
   );
 }
+
+const base = 1.2; // rem, initial size
+const step = 0.25; // rem added per vote
+const maxRem = 3.5; // cap so text doesn’t explode
+
+const OpinionChart = ({ question, voteResults, hasVoted, onVote }) => {
+  const base = 1.2;
+  const step = 0.3;
+  const maxRem = 3.5;
+
+  const sizeForVotes = (count) => `${Math.min(base + step * count, maxRem)}rem`;
+
+  // highest count to highlight winners
+  const maxVotes = Object.values(voteResults).length
+    ? Math.max(...Object.values(voteResults))
+    : 0;
+
+  return (
+    <div className="space-y-3">
+      {question.options.map((opt) => {
+        const count = voteResults[opt] || 0;
+        const winner = hasVoted && count === maxVotes && maxVotes > 0;
+
+        return (
+          <button
+            key={opt}
+            disabled={hasVoted}
+            onClick={() => onVote(opt)}
+            style={{ fontSize: sizeForVotes(count) }}
+            className={`w-full py-3  transition ${
+              hasVoted ? (winner ? "" : "") : "hover:bg-blue-100"
+            }`}
+          >
+            {opt}
+            <span className="ml-2 text-sm">{count}</span>
+          </button>
+        );
+      })}
+    </div>
+  );
+};

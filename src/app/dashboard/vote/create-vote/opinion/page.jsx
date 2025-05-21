@@ -31,15 +31,6 @@ export default function OpinionChartForm() {
     }
 
     try {
-      //   await axios.post("http://localhost:3001/api/vote/create", {
-      //     userId: userInfo.id,
-      //     type: "opinion",
-      //     title: title.trim(),
-      //     options: options.map((o) => o.trim()).filter(Boolean),
-      //   });
-
-      //     router.push("/dashboard/vote"); // back to library
-
       const voteData = {
         type: "opinion",
         question,

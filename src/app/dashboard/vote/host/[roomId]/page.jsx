@@ -16,11 +16,7 @@ export default function HostRoomPage() {
   const [isLoading, userData, userError] = useIsLoggedIn();
   const { isLoggedIn, userInfo } = useAppSelector((state) => state.userInfo);
 
-  const [questions, setQuestions] = useState([
-    { _id: "1", title: "What's your favorite programming language?" },
-    { _id: "2", title: "How many years of experience do you have?" },
-    { _id: "3", title: "What frameworks do you use most often?" },
-  ]);
+  const [questions, setQuestions] = useState([]);
   const [liveQuestion, setLiveQuestion] = useState(null);
   const [voteResults, setVoteResults] = useState({
     JavaScript: 8,
@@ -95,6 +91,7 @@ export default function HostRoomPage() {
       socket.off("update-user-list");
     };
   }, [roomId, userInfo?.userId]);
+  console.log(questions, "questions");
 
   const handleGoLive = (question) => {
     setLiveQuestion(question);
@@ -203,7 +200,7 @@ export default function HostRoomPage() {
                       className="border border-gray-100 bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-all flex justify-between items-center"
                     >
                       <span className="font-medium text-gray-800">
-                        {q.title}
+                        {q.question}
                       </span>
                       <div className="flex gap-2">
                         <button
@@ -443,99 +440,3 @@ export default function HostRoomPage() {
     </div>
   );
 }
-
-/*
-<div className="p-6 max-w-4xl mx-auto">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Room: {roomId}</h1>
-        <button
-          onClick={handleEndRoom}
-          className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg"
-        >
-          End Room
-        </button>
-      </div>
-
-      <div className="mb-8">
-        <h2 className="text-xl font-semibold mb-4">Your Question Library</h2>
-        {questions.length === 0 ? (
-          <p className="text-gray-500">No questions created yet.</p>
-        ) : (
-          <ul className="space-y-3">
-            {questions.map((q) => (
-              <li
-                key={q._id}
-                className="border p-4 rounded-md flex justify-between items-center"
-              >
-                <span className="font-medium">{q.title}</span>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => handleGoLive(q)}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-lg"
-                  >
-                    Go Live
-                  </button>
-                  <button
-                    onClick={() => handleRemove(q._id)}
-                    className="bg-gray-400 hover:bg-gray-500 text-white px-3 py-1 rounded-lg"
-                  >
-                    Remove
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-      <div className="bg-white shadow rounded p-4">
-        <h2 className="text-xl font-semibold mb-2">Live Participants</h2>
-        {users.length === 0 ? (
-          <p className="text-gray-500">No users joined yet.</p>
-        ) : (
-          <ul className="list-disc pl-6">
-            {users.map((user) => (
-              <li key={user.userId} className="text-gray-800">
-                {user.firstname}
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-      {liveQuestion && (
-        <div className="bg-white p-6 rounded-lg shadow mt-10">
-          <h2 className="text-lg font-bold mb-4">Live: {liveQuestion.title}</h2>
-
-          <PieChart width={400} height={300}>
-            <Pie
-              data={Object.entries(voteResults).map(([name, value]) => ({
-                name,
-                value,
-              }))}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              outerRadius={100}
-              fill="#8884d8"
-              label
-            >
-              {Object.entries(voteResults).map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
-            </Pie>
-            <Tooltip />
-            <Legend />
-          </PieChart>
-        </div>
-      )}
-
-      {roomEnded && (
-        <div className="text-center text-red-600 mt-10 font-semibold text-lg">
-          Room has been ended.
-        </div>
-      )}
-    </div>
-    */

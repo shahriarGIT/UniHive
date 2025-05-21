@@ -31,7 +31,6 @@ export default function RootLayout({ children }) {
         <body>
           <Navbar />
           {children}
-          {/* <body className={``}>{children}</body> */}
         </body>
       </Provider>
     </html>

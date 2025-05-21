@@ -4,13 +4,7 @@ import { useRouter } from "next/navigation";
 import { setUserInfo, removeUserInfo } from "../store/slices/userSlice";
 import { useAppDispatch, useAppSelector } from "../store";
 
-import { useCookies } from "react-cookie";
-
-import { getCookie } from "cookies-next";
-
 import jwt from "jsonwebtoken";
-
-import Cookies from "js-cookie";
 
 const useIsLoggedIn = () => {
   const router = useRouter();
@@ -24,36 +18,6 @@ const useIsLoggedIn = () => {
 
   useEffect(() => {
     (async () => {
-      // const data: any = await getUser();
-      /*
-      getUser()
-        .then((data: any) => {
-          // console.log(data, "from eefffect");
-          console.log(data, "from eefffect");
-
-          if (!data) {
-            return new Error("Please Log in");
-          }
-          setUserData(data);
-          console.log( data, "set data state from hook");
-          
-          dispatch(setUserInfo(data)) ;
-        //   router.push("/restaurants");
-    
-        })
-        .catch((e) => {
-            setUserError(e);
-            setUserData(null);
-            dispatch(removeUserInfo()) ;
-
-
-        //   router.push("/login");
-        }).finally(() => {
-          setIsLoading(false);
-
-        });
-*/
-
       let token = localStorage.getItem("token");
       console.log(token);
 

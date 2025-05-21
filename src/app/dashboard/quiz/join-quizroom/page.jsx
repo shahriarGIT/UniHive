@@ -5,28 +5,23 @@ import { useRouter } from "next/navigation";
 import io from "socket.io-client";
 import useIsLoggedIn from "@/hooks/useIsLoggedIn";
 import { useAppSelector } from "@/app/store";
-import { useSearchParams } from "next/navigation";
 
-let socket; // Declare socket outside the component to manage the connection
+let socket;
 
 export default function JoinQuizRoomPage() {
   const [roomName, setRoomName] = useState("");
   const [roomPassword, setRoomPassword] = useState("");
   const [username, setUsername] = useState("");
   const [error, setError] = useState("");
-  // const [participants, setParticipants] = useState([]);
   const [isLoading, userData, userError] = useIsLoggedIn();
   const { isLoggedIn, userInfo } = useAppSelector((state) => state.userInfo);
   const router = useRouter();
-
-  // console.log(userInfo, "userInfo from quiz room manage page");
 
   useEffect(() => {
     // Initialize socket.io connection when the component mounts
     socket = io("http://localhost:3001");
 
     return () => {
-      // Clean up the socket connection when the component unmounts
       if (socket) {
         socket.disconnect();
       }
@@ -40,13 +35,6 @@ export default function JoinQuizRoomPage() {
     }
 
     try {
-      // Send join request to the server to validate the room
-      // socket.emit("joinRoom", {
-      //   roomName,
-      //   roomPassword,
-      //   user: { id: userInfo?.id, name: username },
-      // });
-
       // Listen for any error during the join attempt
       socket.on("joinError", (error) => {
         setError(error.message);
@@ -54,10 +42,7 @@ export default function JoinQuizRoomPage() {
       router.push(`quiz-lobby/${roomName}?username=${username}`); // Redirect to the quiz room page
 
       // Listen for updated participants list upon successful room join
-      socket.on("participantsUpdate", (updatedParticipants) => {
-        // setParticipants(updatedParticipants);
-        // router.push(`quiz-lobby/${roomName}?username=${username}`); // Redirect to the quiz room page
-      });
+      socket.on("participantsUpdate", (updatedParticipants) => {});
     } catch (err) {
       console.error("Error joining room", err);
       setError("Failed to join quiz room. Please try again.");
@@ -101,17 +86,6 @@ export default function JoinQuizRoomPage() {
           Join Room
         </button>
       </div>
-
-      {/* <div className="mt-6">
-        <h2 className="text-lg font-semibold">Participants:</h2>
-        <ul className="space-y-2">
-          {participants.map((participant, index) => (
-            <li key={index} className="text-sm text-gray-700">
-              {participant}
-            </li>
-          ))}
-        </ul>
-      </div> */}
     </div>
   );
 }

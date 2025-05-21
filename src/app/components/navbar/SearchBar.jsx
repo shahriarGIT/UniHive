@@ -9,7 +9,9 @@ const SearchBar = () => {
         href="/dashboard"
         className="hover:font-bold text-black font-bold py-2 px-4 "
       >
-        UniHive
+        <span className="text-transparent font-bold text-2xl bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600">
+          UniHive
+        </span>
       </Link>{" "}
     </div>
   );

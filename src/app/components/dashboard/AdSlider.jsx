@@ -10,70 +10,49 @@ const addInfo = [
     id: 1,
     title: "Ad1",
     altText: "something",
-    imgUrl: "/images/ratings-ad.jpg",
+    imgUrl: "/images/ad/cp.png",
   },
   {
     id: 2,
     title: "Ad1",
     altText: "something",
-    imgUrl: "/images/ratings-ad.jpg",
+    imgUrl: "/images/ad/card.png",
   },
   {
     id: 3,
     title: "Ad1",
     altText: "something",
-    imgUrl: "/images/ratings-ad.jpg",
+    imgUrl: "/images/ad/fcard.png",
   },
   {
     id: 4,
     title: "Ad1",
     altText: "something",
-    imgUrl: "/images/ratings-ad.jpg",
+    imgUrl: "/images/ad/fc.png",
   },
-  //   {
-  //     id: 5,
-  //     title: "Ad1",
-  //     altText: "something",
-  //     imgUrl: "/images/desktop_tile_EnbiEV.webp",
-  //   },
-  //   {
-  //     id: 6,
-  //     title: "Ad1",
-  //     altText: "something",
-  //     imgUrl: "/images/desktop_tile_EnbiEV.webp",
-  //   },
-  //   {
-  //     id: 7,
-  //     title: "Ad1",
-  //     altText: "something",
-  //     imgUrl: "/images/desktop_tile_EnbiEV.webp",
-  //   },
-  //   {
-  //     id: 8,
-  //     title: "Ad1",
-  //     altText: "something",
-  //     imgUrl: "/images/desktop_tile_EnbiEV.webp",
-  //   },
-  //   {
-  //     id: 9,
-  //     title: "Ad1",
-  //     altText: "something",
-  //     imgUrl: "/images/desktop_tile_EnbiEV.webp",
-  //   },
+  {
+    id: 5,
+    title: "Ad1",
+    altText: "something",
+    imgUrl: "/images/ad/quiz.png",
+  },
+  {
+    id: 6,
+    title: "Ad1",
+    altText: "something",
+    imgUrl: "/images/ad/quizp.png",
+  },
 ];
 
 const AdSlider = () => {
   useEffect(() => {
-    // add class to the section you want to target
     let e = document.querySelectorAll(".adslider-class .slick-slide");
-    // console.log(e, "adslider");
 
     if (e) {
       for (let index = 0; index < e.length; index++) {
         e[index].style.marginRight = "4.5rem";
 
         e[index].children[0].children[0].style.width = "18rem";
-        // e[index].children[0].children[0].style.height = "10rem";
       }
     }
   }, []);

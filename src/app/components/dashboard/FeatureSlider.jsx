@@ -26,8 +26,6 @@ const FeatureSlider = ({ imagesInfo }) => {
 
   useEffect(() => {
     let e = document.querySelectorAll(".cuisine-class .slick-slide");
-    // console.log((e[0].style.marginRight = "-6rem"));
-    // console.log(e[0].children[0]);
 
     for (let index = 0; index < e.length; index++) {
       e[index].style.marginRight = "-6rem";
@@ -55,7 +53,7 @@ const FeatureSlider = ({ imagesInfo }) => {
       return;
     }
     urlSearchParams.set("c", code);
-    router.push(`/restaurants?${urlSearchParams}`);
+    router.push(`/dashboard?${urlSearchParams}`);
   };
 
   return (
@@ -73,6 +71,7 @@ const FeatureSlider = ({ imagesInfo }) => {
               src={item.imgUrl}
               alt={item.altText}
             />
+
             <h2 className="text-sm text-center font-semibold">{item.title}</h2>
           </div>
         ))}

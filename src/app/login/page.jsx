@@ -10,7 +10,11 @@ import useIsLoggedIn from "@/hooks/useIsLoggedIn";
 import Spinner from "../components/Spinner";
 import SpinnerCircle from "../components/loader/SpinnerCircle";
 import AlertMessage from "../components/AlertMessage";
-import { useUserLoginMutation } from "../store/apis/userApi";
+import {
+  useUserLoginMutation,
+  useUserLogoutMutation,
+  useUserSignupMutation,
+} from "@/app/store/apis/userApi";
 import { useAppDispatch, useAppSelector } from "../store";
 
 const page = () => {
@@ -32,12 +36,12 @@ const page = () => {
   useEffect(() => {
     if (loginResult?.data?.status === "success") {
       localStorage.setItem("token", loginResult?.data?.token);
-      router.push("/");
+      router.push("/dashboard");
     }
     if (userInfo) {
-      router.push("/restaurants");
+      router.push("/dashboard");
     }
-  }, [loginResult, userInfo]);
+  }, [userInfo, loginResult]);
 
   if (isLoading) {
     return <Spinner height="85vh" />;
@@ -62,15 +66,7 @@ const page = () => {
         errStatus = data.status;
         errMsg = data.message;
       }
-      // else {
-      //   console.log("Error occurred without 'message' property in 'data'.");
-      // }
     }
-    //  else {
-    //   console.log(
-    //     "Error occurred without 'data' property or with invalid 'data' type."
-    //   );
-    // }
   }
 
   return (
@@ -95,7 +91,7 @@ const page = () => {
           <div className="mt-10 text-center">
             <button
               onClick={() => setLoginModal((prev) => !prev)}
-              className=" rounded-md text-sm hover:bg-amber-300 font-medium text-center text-white border-black bg-amber-600 w-full  py-3"
+              className=" rounded-md text-sm hover:bg-indigo-500 font-medium text-center text-white border-black bg-indigo-600 w-full  py-3"
             >
               Log In
             </button>
@@ -172,7 +168,7 @@ const page = () => {
               <button
                 disabled={loginResult.isLoading}
                 type="submit"
-                className=" rounded-md text-sm hover:bg-amber-400 font-medium text-center text-white border-black bg-amber-600 w-full  py-3"
+                className=" rounded-md text-sm hover:bg-indigo-500  font-medium text-center text-white border-black bg-indigo-600  w-full  py-3"
               >
                 {loginResult.isLoading ? <SpinnerCircle /> : "Log In"}
               </button>

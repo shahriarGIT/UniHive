@@ -11,47 +11,6 @@ import SpinnerCircle from "../components/loader/SpinnerCircle";
 
 const oranizationType = ["University", "School", "College", "Office"];
 
-const cardInfo = [
-  {
-    id: 1,
-    city: "Dhaka",
-    area: [
-      "Dhanmondi",
-      "Uttara",
-      "Demra",
-      "Banani",
-      "Nikunja",
-      "Bashundhara",
-      "Badda",
-      "Mirpur",
-      "Muhammodpur",
-    ],
-    alphabet: "D",
-    img: "/images/city-title-Dhaka.webp",
-  },
-  {
-    id: 2,
-    city: "Chittagong",
-    area: ["c", "b"],
-    alphabet: "C",
-    img: "/images/city-title-Chittagong.webp",
-  },
-  {
-    id: 3,
-    city: "Bogra",
-    area: [],
-    alphabet: "B",
-    img: "/images/city-tile-Bogra.webp",
-  },
-  {
-    id: 4,
-    city: "Sylhet",
-    area: [],
-    alphabet: "S",
-    img: "/images/city-title-Sylhet.webp",
-  },
-];
-
 const page = () => {
   const router = useRouter();
   const [loginModal, setLoginModal] = useState(false);
@@ -60,9 +19,6 @@ const page = () => {
   const [isLoading, userData, userError] = useIsLoggedIn();
 
   useEffect(() => {
-    // if (signUpResult.data?.status === "success") {
-    //   router.push("/login");
-    // }
     if (signUpResult.isSuccess || userData) {
       router.push("/login");
     }
@@ -211,7 +167,7 @@ const page = () => {
             <button
               disabled={signUpResult.isLoading}
               type="submit"
-              className=" rounded-md text-sm hover:bg-blue-600-dark font-medium text-center text-white border-black bg-amber-600 w-full  py-3"
+              className=" rounded-md text-sm hover:bg-indigo-500  font-medium text-center text-white border-black bg-indigo-600   w-full  py-3"
             >
               {signUpResult.isLoading ? <SpinnerCircle /> : "Sign Up  "}
             </button>

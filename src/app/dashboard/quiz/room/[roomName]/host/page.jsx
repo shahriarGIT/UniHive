@@ -91,9 +91,7 @@ export default function QuizRoomManagePage() {
     });
 
     // Listen for quiz start
-    socket.on("quizStarted", ({ quizId }) => {
-      // router.push(`/dashboard/quiz/room/${roomName}/quiz-test/${quizId}`);
-    });
+    socket.on("quizStarted", ({ quizId }) => {});
 
     return () => {
       socket.off("participantsUpdate");
@@ -118,28 +116,10 @@ export default function QuizRoomManagePage() {
 
   const handleEnd = () => {
     socket.emit("endQuiz", { roomName });
-    // router.push("/dashboard");
     setIsStarted(false);
   };
 
   return (
-    // <div>
-    //   <h1>Room: {roomName}</h1>
-    //   <h2 className="text-lg font-semibold mb-2">
-    //     Host: {host?.name || "Loading..."}
-    //   </h2>
-
-    //   <p>Waiting for participants to join...</p>
-    //   <ul>
-    //     <ul>
-    //       {participants.map((p) => (
-    //         <li key={p._id}>{p.name} </li>
-    //       ))}
-    //     </ul>
-    //   </ul>
-
-    //   <button onClick={handleStart}>Start Quiz</button>
-    // </div>
     <div className="bg-white rounded-xl border border-purple-100">
       <div className="min-h-[80vh] py-8 px-4 bg-gradient-to-b from-purple-50 to-white">
         <div className="max-w-4xl mx-auto">
@@ -152,12 +132,7 @@ export default function QuizRoomManagePage() {
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-white/20 text-white">
                   Host: {host?.name || "Loading..."}
                 </span>
-                {/* {isHost && (
-                  <div className="text-sm text-gray-500">
-                    quizStats.completedCount 10 / quizStats.totalParticipants 20{" "}
-                    users completed the quiz.
-                  </div>
-                )} */}
+
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-white/20 text-white">
                   Topic: {flashcard.topic}
                 </span>
@@ -199,31 +174,6 @@ export default function QuizRoomManagePage() {
                 </h2>
                 <div className="max-h-64 overflow-y-auto pr-1">
                   <ul className="space-y-2">
-                    {/* {participants.map((participant) => (
-                      <li
-                        key={participant.id}
-                        className="py-3 px-4 flex items-center justify-between bg-gray-50 rounded-lg border border-gray-100"
-                      >
-                        <span className="font-medium text-gray-800">
-                          {participant.name || participant.username}
-                        </span>
-                        <span
-                          className={`text-xs px-2.5 py-1 rounded-full ${
-                            isStarted && participant.completed === true
-                              ? "bg-green-100 text-green-800"
-                              : isStarted && participant.completed === false
-                              ? "bg-blue-100 text-blue-800"
-                              : "bg-amber-200 text-gray-600"
-                          }`}
-                        >
-                          {isStarted && participant.completed === true
-                            ? "Completed"
-                            : isStarted && participant.completed === false
-                            ? "In Progress"
-                            : "Not Started"}
-                        </span>
-                      </li>
-                    ))} */}
                     {participants
                       .filter((p) => p._id?.toString() !== host._id.toString()) // 👈 exclude host
                       .map((participant) => (

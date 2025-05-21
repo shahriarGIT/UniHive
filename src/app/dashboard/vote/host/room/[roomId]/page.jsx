@@ -42,7 +42,7 @@ export default function HostRoomPage() {
           `http://localhost:3001/api/vote/room/${roomId}`
         );
         setRoomData(res.data);
-        setQuestions(res.data.questions); // Assuming questions are part of room data
+        setQuestions(res.data.questions);
       } catch (err) {
         console.error("Error fetching room data:", err);
       }

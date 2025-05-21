@@ -111,32 +111,3 @@ export default function JoinRoomPage() {
     </div>
   );
 }
-
-{
-  /* <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-4 text-center">Join Room</h2>
-        <input
-          type="text"
-          placeholder="Room ID"
-          value={roomId}
-          onChange={(e) => setRoomId(e.target.value)}
-          className="w-full border px-3 py-2 rounded mb-4"
-        />
-        <input
-          type="text"
-          placeholder="Passcode"
-          value={passcode}
-          onChange={(e) => setPasscode(e.target.value)}
-          className="w-full border px-3 py-2 rounded mb-4"
-        />
-        {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
-        <button
-          onClick={handleJoin}
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-        >
-          Join Room
-        </button>
-      </div>
-    </div> */
-}

@@ -13,7 +13,6 @@ const Partner = () => {
           Together, we're shaping the future of education"
         </h4>
       </div>
-      {/* className="bg-[url('/images/home-vendor-bd.webp')] */}
       <div className="h-[25rem] relative ">
         <Image
           src="/images/category/learn.jpg"
@@ -31,13 +30,6 @@ const Partner = () => {
           power of real-time collaboration as you test your knowledge, gather
           feedback, and master new skills together.
         </h3>
-
-        {/* <Link
-          href="/partner-create-account"
-          className="w-full block text-center rounded-md mt-6 py-3 text-white font-medium bg-pandaColor-primary"
-        >
-          Get Started
-        </Link> */}
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ import axios from "axios";
 import useIsLoggedIn from "@/hooks/useIsLoggedIn";
 import { useAppDispatch, useAppSelector } from "@/app/store";
 import { setScore } from "@/app/store/slices/dataSlice";
+import useCountdown from "@/hooks/useCountDown";
 
 let socket;
 
@@ -15,15 +16,20 @@ export default function QuizTestPage() {
   const router = useRouter();
   const [quiz, setQuiz] = useState(null);
   const [answers, setAnswers] = useState({});
-  const [currentScore, setCurrentScore] = useState(0); // For showing score after submission
+  const [currentScore, setCurrentScore] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [isLoading, userData, userError] = useIsLoggedIn();
   const { isLoggedIn, userInfo } = useAppSelector((state) => state.userInfo);
   const { score } = useAppSelector((state) => state.userData);
   const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
-
   const usernameParam = searchParams.get("username");
+  const [startIso, setStartIso] = useState(null);
+  const [duration, setDuration] = useState(0);
+
+  const timeLeft = useCountdown(0, 5);
+
+  console.log(duration, "duration data");
 
   useEffect(() => {
     socket = io("http://localhost:3001");
@@ -42,18 +48,19 @@ export default function QuizTestPage() {
   useEffect(() => {
     if (!socket) return;
 
+    socket.on("quizStarted", ({ quizId, startedAt, duration }) => {
+      // non-host users will land here; host can ignore
+      setStartIso(startedAt);
+      setDuration(duration);
+
+      console.log("Quiz started at: called");
+    });
+
     socket.on("quizStatsUpdate", (stats) => {
       console.log("Live stats:", stats);
-      // You can set to state: setStats(stats)
     });
 
     socket.on("quizForceEnded", () => {
-      // Optional: auto-submit unanswered questions before leaving
-      // submitAnswersSilently();
-
-      // router.replace(
-      //   `/dashboard/quiz/room/${roomName}/quiz-test/${quizId}/quiz-stats?username=${usernameParam}`
-      // );
       handleSubmit();
     });
 
@@ -98,10 +105,6 @@ export default function QuizTestPage() {
       dispatch(setScore(response.data.score));
 
       // Step 3: Emit quizFinished to backend for real-time tracking
-      // socket.emit("quizFinished", {
-      //   roomName,
-      //   userId: userInfo?.id,
-      // });
 
       // Step 4: Redirect or navigate to stats page
       router.push(
@@ -111,6 +114,10 @@ export default function QuizTestPage() {
       console.error("Error submitting quiz:", err);
     }
   };
+
+  // Format mm:ss
+  const mm = String(Math.floor(timeLeft / 60)).padStart(2, "0");
+  const ss = String(timeLeft % 60).padStart(2, "0");
 
   if (!quiz) {
     return (
@@ -137,6 +144,12 @@ export default function QuizTestPage() {
             <span className="mx-2">•</span>
             <span>{totalQuestions} questions</span>
           </div>
+          {/* Header with countdown */}
+          {duration > 0 && (
+            <div className="mb-4 text-right text-lg font-semibold">
+              ⏰ {mm}:{ss}
+            </div>
+          )}
         </div>
 
         {/* Progress bar */}

@@ -10,25 +10,26 @@ import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/app/store";
 import { useRouter } from "next/navigation";
 // import { useUserLogoutMutation } from "@/app/store/apis/userApi";
-// import { removeUserInfo } from "@/app/store/slices/userSlice";
+import { removeUserInfo } from "@/app/store/slices/userSlice";
 // import { useOptionClose } from "@/app/hooks/useOptionClose";
 // import { cartApi, useFetchCartQuery } from "@/app/store/apis/cartApi";
 import DownArrow from "./DownArrow";
+import { useOptionClose } from "@/hooks/useOptionClose";
+import useIsLoggedIn from "@/hooks/useIsLoggedIn";
+import {
+  useUserLoginMutation,
+  useUserLogoutMutation,
+  useUserSignupMutation,
+} from "@/app/store/apis/userApi";
 
 const Navbar = () => {
-  //   const { isLoggedIn, userInfo } = useAppSelector(
-  //     (state) => state.userinfo
-  //   );
+  const [isLoading, userData, userError] = useIsLoggedIn();
+
+  const { isLoggedIn, userInfo } = useAppSelector((state) => state.userInfo);
+
   const [isLoginMenu, setIsLoginMenu] = useState(false);
   const dispatch = useAppDispatch();
 
-  //   const {
-  //     data: cartData,
-  //     error: cartError,
-  //     isFetching: isFetchingCart,
-  //     isLoading: isCartLoading,
-  //   } = useFetchCartQuery({ userId: userInfo?.id });
-  //   const cartArray = cartData?.data?.data;
   const cartArray = [];
   let localCartObj = {};
   localCartObj = cartArray?.cart?.length > 0 ? cartArray.cart[0] : {};
@@ -39,7 +40,7 @@ const Navbar = () => {
     0
   );
 
-  //   const [logout, result] = useUserLogoutMutation();
+  const [logout, result] = useUserLogoutMutation();
 
   const router = useRouter();
 
@@ -52,23 +53,20 @@ const Navbar = () => {
   };
 
   const logoutButtonHandler = () => {
-    // logout({});
-    // dispatch(removeUserInfo());
+    logout({});
+    dispatch(removeUserInfo());
     router.push("/");
     localStorage.removeItem("token");
+    setIsLoginMenu((prev) => !prev);
   };
 
   const closeModal = () => {
     setIsLoginMenu(false);
   };
 
-  //   const [modalRef] = useOptionClose({ closeModal });
+  const [modalRef] = useOptionClose({ closeModal });
 
-  const cartHandler = () => {
-    if (!localCartObj?.restaurantId) return;
-
-    router.push(`/restaurants/${localCartObj.restaurantId}`);
-  };
+  const cartHandler = () => {};
 
   const changeRouteHandler = (address) => {
     router.push(`/${address}`);
@@ -83,38 +81,36 @@ const Navbar = () => {
           <span
             onClick={loginButtonHandler}
             title="Login"
-            className="cursor-pointer"
+            className="cursor-pointer flex"
           >
             <LoginLogo />
+            <span className="text-xs hover:text-pandaColor-dark font-semibold relative mt-1 ml-1">
+              {userInfo
+                ? userInfo?.firstname.toUpperCase()?.split(" ")[0] || ""
+                : "Login"}
+            </span>
           </span>
-          <Link href="/" className="flex items-center gap-2 cursor-pointer">
-            <span className="hidden sm:block">{/* <PandaLogo /> */}</span>
-            <span>{/* <FoodPandaLogo /> */}</span>
+          <Link
+            href="/dashboard"
+            className="flex items-center gap-2 cursor-pointer"
+          >
+            <span className="text-transparent font-bold text-2xl bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600">
+              UniHive
+            </span>
+            <span>{/* <FoodPandaLogo /> */} </span>
           </Link>
           <span
             title="Cart"
             className="flex cursor-pointer h-16 w-14 justify-center items-center"
             onClick={cartHandler}
-          >
-            {/* <CartLogo /> */}
-            {/* userinfo ---------------------- */}
-            <span
-              className={`text-xs pl-1 ${
-                true && totalNumberOfProducts > 0 ? "block" : "hidden"
-              }`}
-            >
-              {totalNumberOfProducts}
-            </span>
-          </span>
+          ></span>
         </div>
-        {/* mobile search bar on delivery pages after login */}
-        {/* {isLoggedIn && userInfo?.role === "user" && <SearchBar />}  */}
-        {/* isLoginMenu && userInfo && () ------------- */}
-        {true && true && (
+
+        {isLoginMenu && userInfo && (
           <ul className="absolute cursor-pointer bg-white left-0 top-0 mt-16 z-[300] shadow-md lg:hidden">
             <hr />
             {/* userInfo?.role  */}
-            {"partner" === "partner" && (
+            {
               <li className="py-4 w-56 hover:bg-gray-50 group ">
                 <Link
                   href="/"
@@ -123,29 +119,13 @@ const Navbar = () => {
                   Dashboard
                 </Link>
               </li>
-            )}
-            <li className="py-4 w-56 hover:bg-gray-50 group ">
-              <Link
-                href="/"
-                className="pl-6 pt-5 text-sm font-normal group-hover:text-pandaColor-primary"
-              >
-                Orders
-              </Link>
-            </li>{" "}
+            }
             <li className="py-4 w-56 hover:bg-gray-50 group ">
               <Link
                 href="/"
                 className="pl-6 pt-5 text-sm font-normal group-hover:text-pandaColor-primary"
               >
                 Profile
-              </Link>
-            </li>{" "}
-            <li className="py-4 w-56 hover:bg-gray-50 group ">
-              <Link
-                href="/"
-                className="pl-6 pt-5 text-sm font-normal group-hover:text-pandaColor-primary"
-              >
-                Voucher
               </Link>
             </li>{" "}
             <hr />
@@ -167,14 +147,9 @@ const Navbar = () => {
           <Link
             href="/"
             className="flex items-center gap-2 cursor-pointer border-r-[1px] pr-14 border-neutral-300"
-          >
-            <span className="">{/* <PandaLogo /> */}</span>
-            <span>{/* <FoodPandaLogo /> */}</span>
-          </Link>
+          ></Link>
           {/* search bar on pc */}
-          {/* isLoggedIn && userInfo?.role === "user" */}
           {true && "user" === "user" && <SearchBar />}
-          {/* {true && <SearchBar />} */}
 
           <div className="flex  items-center ">
             <span
@@ -184,14 +159,12 @@ const Navbar = () => {
             >
               <LoginLogo />
               <span className="text-xs hover:text-pandaColor-dark font-semibold relative">
-                {/* userInfo
-                  ? userInfo?.name.toUpperCase()?.split(" ")[0] || ""
-                  : "Login"*/}
-                {true ? "sdfds " || "" : "Login"}
+                {userInfo
+                  ? userInfo?.firstname.toUpperCase()?.split(" ")[0] || ""
+                  : "Login"}
               </span>
               <span className="rotate-90 mt-[1px] lg:mt-2 ">
-                {/* userInfo &&  */}
-                {true && <DownArrow />}
+                {userInfo && <DownArrow />}
               </span>
             </span>
             <span
@@ -200,7 +173,6 @@ const Navbar = () => {
               onClick={cartHandler}
             >
               {/* <CartLogo /> */}
-              {/* userInfo ---- */}
               <span
                 className={`text-xs font-semibold pl-1 ${
                   true && totalNumberOfProducts > 0 ? "block" : "hidden"
@@ -211,40 +183,19 @@ const Navbar = () => {
             </span>
           </div>
         </div>
-        {/* isLoginMenu && userInfo && */}
-        {isLoginMenu && true && (
+        {isLoginMenu && userInfo && (
           <ul
             // @ts-ignore
-            // ref={modalRef}
             className="absolute cursor-pointer text-gray-500 bg-white right-16 top-0 mt-16 z-[300] shadow-md hidden lg:block"
           >
             <hr />
-            {userInfo?.role === "partner" && (
+            {userInfo && (
               <li className="py-4 w-56 hover:bg-gray-50 group ">
                 <span
-                  onClick={() => changeRouteHandler("dashboard")}
+                  onClick={() => changeRouteHandler("/dashboard")}
                   className="pl-6 pt-5 text-sm font-normal group-hover:text-pandaColor-primary"
                 >
                   Dashboard
-                </span>
-              </li>
-            )}
-            {userInfo?.role === "partner" ? (
-              <li className="py-4 w-56 hover:bg-gray-50 group ">
-                <span
-                  onClick={() => changeRouteHandler("dashboard/order")}
-                  className="pl-6 pt-5 text-sm font-normal group-hover:text-pandaColor-primary"
-                >
-                  Orders
-                </span>
-              </li>
-            ) : (
-              <li className="py-4 w-56 hover:bg-gray-50 group ">
-                <span
-                  onClick={() => changeRouteHandler("/")}
-                  className="pl-6 pt-5 text-sm font-normal group-hover:text-pandaColor-primary"
-                >
-                  Orders
                 </span>
               </li>
             )}
@@ -254,14 +205,6 @@ const Navbar = () => {
                 className="pl-6 pt-5 text-sm font-normal group-hover:text-pandaColor-primary"
               >
                 Profile
-              </Link>
-            </li>{" "}
-            <li className="py-4 w-56 hover:bg-gray-50 group ">
-              <Link
-                href="/"
-                className="pl-6 pt-5 text-sm font-normal group-hover:text-pandaColor-primary"
-              >
-                Voucher
               </Link>
             </li>{" "}
             <hr />

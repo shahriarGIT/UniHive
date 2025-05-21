@@ -51,7 +51,9 @@ export default function Home() {
 
   const setMapUrlHandler = () => {};
 
-  const closeModal = () => {};
+  const closeModal = () => {
+    router.push("/login");
+  };
 
   // const [modalRef] = useOptionClose({ closeModal });
 
@@ -138,10 +140,10 @@ export default function Home() {
                 </button>
                 <p className="text-lg font-light md:mb-4">or</p>
                 <button
-                  onClick={setPickUpUrlHandler}
+                  onClick={closeModal}
                   className="bg-amber-300 hover:bg-amber-400 hover:scale-105  w-1/2 md:w-[11rem] py-5 md:mb-4 rounded-lg font-medium text-white"
                 >
-                  X
+                  Login
                 </button>
               </div>
             </span>
@@ -157,7 +159,7 @@ export default function Home() {
                   className="absolute right-5 top-6 px-[.7rem] py-1 text-pandaColor-primary font-bold bg-white rounded-3xl"
                   onClick={closeModal}
                 >
-                  X
+                  Login
                 </button>
 
                 <div className="mb-2">{/* <Map /> */}</div>
@@ -175,7 +177,7 @@ export default function Home() {
                   onClick={() => setMapUrlHandler(area)}
                   className="bg-pandaColor-primary hover:bg-pandaColor-light  w-full  py-3 my-2 rounded-lg font-medium text-white"
                 >
-                  Search Restaurants
+                  Search Organization
                 </button>
               </div>
             )}

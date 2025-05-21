@@ -9,42 +9,23 @@ const FeatureType = () => {
   const pathname = usePathname();
   const params = useParams();
   const url = new URLSearchParams(Array.from(searchParams.entries()));
-  //   const userInfo = useAppSelector((state) => state.userinfo.userInfo);
 
   const urlDeliveryHandler = () => {
-    // if (url.get("type") !== "delivery") {
-    //   url.delete("type");
-    //   url.append("type", "delivery");
-    //   router.push(`${pathname}?${url.toString()}`);
-    // }
     router.push("dashboard/quiz");
   };
   const urlPickupHandler = () => {
-    // if (url.get("type") !== "polling") {
-    //   url.delete("type");
-    //   url.append("type", "polling");
-    //   router.push(`${pathname}?${url.toString()}`);
-    // }
     router.push("dashboard/vote");
   };
   const urlShopHandler = () => {
-    // if (url.get("type") !== "pandashop") {
-    //   url.delete("type");
-    //   url.append("type", "pandashop");
-    //   router.push(`${pathname}?${url.toString()}`);
-    // }
     router.push("dashboard/flashcard");
   };
 
-  // router.push(`${pathname}?${url.toString()}`);
-  // userInfo?.role != "user"
-
   return (
     <div
-      className={`lg:mt-10 lg:ml-20    bg-white  z-[120] lg:z-20 ${
+      className={`lg:mt-10 lg:ml-20    bg-indigo-100 lg:bg-white  z-[120] lg:z-20 ${
         "user" != "user"
           ? "sticky lg:relative  top-16 lg:top-0"
-          : "sticky lg:relative  top-36 lg:top-0"
+          : "sticky lg:relative  top-16 lg:top-0"
       }`}
     >
       <ul className=" justify-center  mx-auto md:max-w-3xl lg:justify-start lg:mx-0 lg:gap-4  flex text-center">

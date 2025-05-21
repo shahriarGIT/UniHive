@@ -64,7 +64,7 @@ body {
 @media screen and (width < 450px) {
   #slider-container {
     width: 150vw !important;
-    background: red;
+    /* background: red; */
     padding: 0 2rem;
   }
 }
@@ -72,7 +72,7 @@ body {
 @media screen and (width < 350px) {
   #slider-container {
     width: 150vw !important;
-    background: red;
+    /* background: red; */
     padding: 0 0.7rem;
   }
 }

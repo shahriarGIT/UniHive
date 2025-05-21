@@ -5,7 +5,6 @@ import Image from "next/image";
 
 import Link from "next/link";
 
-// w-[16rem] h-[20rem]
 const CityCard = ({ city, alphabet, img }) => {
   return (
     <div className="relative shrink-0 w-[16rem] h-[20rem]   group overflow-hidden ">
